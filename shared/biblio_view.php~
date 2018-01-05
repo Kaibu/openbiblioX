@@ -1,0 +1,503 @@
+<?php
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
+ */
+ 
+  require_once("../shared/common.php");
+  
+  #****************************************************************************
+  #*  Checking for get vars.  Go back to form if none found.
+  #****************************************************************************
+  if (count($_GET) == 0) {
+    header("Location: ../catalog/index.php");
+    exit();
+  }
+
+  #****************************************************************************
+  #*  Checking for tab name to show OPAC look and feel if searching from OPAC
+  #****************************************************************************
+  if (isset($_GET["tab"])) {
+    $tab = $_GET["tab"];
+  } else {
+    $tab = "cataloging";
+  }
+
+  $nav = "view";
+  if ($tab != "opac") {
+    require_once("../shared/logincheck.php");
+  }
+  require_once("../classes/Biblio.php");
+  require_once("../classes/BiblioQuery.php");
+  require_once("../classes/BiblioCopy.php");
+  require_once("../classes/BiblioCopyQuery.php");
+  require_once("../classes/DmQuery.php");
+  require_once("../classes/UsmarcTagDm.php");
+  require_once("../classes/UsmarcTagDmQuery.php");
+  require_once("../classes/UsmarcSubfieldDm.php");
+  require_once("../classes/UsmarcSubfieldDmQuery.php");
+  require_once("../functions/marcFuncs.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,"shared");
+
+  require_once("../mods/include_mods.php");
+
+  #****************************************************************************
+  #*  Retrieving get var
+  #****************************************************************************
+  $bibid = $_GET["bibid"];
+  if (isset($_GET["msg"])) {
+    $msg = "<font class=\"error\">".H($_GET["msg"])."</font><br><br>";
+  } else {
+    $msg = "";
+  }
+
+  #****************************************************************************
+  #*  Loading a few domain tables into associative arrays
+  #****************************************************************************
+  $dmQ = new DmQuery();
+  $dmQ->connect();
+  $collectionDm = $dmQ->getAssoc("collection_dm");
+  $materialTypeDm = $dmQ->getAssoc("material_type_dm");
+  $biblioStatusDm = $dmQ->getAssoc("biblio_status_dm");
+  $dmQ->close();
+
+  $marcTagDmQ = new UsmarcTagDmQuery();
+  $marcTagDmQ->connect();
+  if ($marcTagDmQ->errorOccurred()) {
+    $marcTagDmQ->close();
+    displayErrorPage($marcTagDmQ);
+  }
+  $marcTagDmQ->execSelect();
+  if ($marcTagDmQ->errorOccurred()) {
+    $marcTagDmQ->close();
+    displayErrorPage($marcTagDmQ);
+  }
+  $marcTags = $marcTagDmQ->fetchRows();
+  $marcTagDmQ->close();
+
+  $marcSubfldDmQ = new UsmarcSubfieldDmQuery();
+  $marcSubfldDmQ->connect();
+  if ($marcSubfldDmQ->errorOccurred()) {
+    $marcSubfldDmQ->close();
+    displayErrorPage($marcSubfldDmQ);
+  }
+  $marcSubfldDmQ->execSelect();
+  if ($marcSubfldDmQ->errorOccurred()) {
+    $marcSubfldDmQ->close();
+    displayErrorPage($marcSubfldDmQ);
+  }
+  $marcSubflds = $marcSubfldDmQ->fetchRows();
+  $marcSubfldDmQ->close();
+
+
+  #****************************************************************************
+  #*  Search database
+  #****************************************************************************
+  $biblioQ = new BiblioQuery();
+  $biblioQ->connect();
+  if ($biblioQ->errorOccurred()) {
+    $biblioQ->close();
+    displayErrorPage($biblioQ);
+  }
+  if (!$biblio = $biblioQ->doQuery($bibid, $tab)) {
+    $biblioQ->close();
+    displayErrorPage($biblioQ);
+  }
+  $biblioFlds = $biblio->getBiblioFields();
+
+  #**************************************************************************
+  #*  Show bibliography info.
+  #**************************************************************************
+  if ($tab == "opac") {
+    require_once("../shared/header_opac.php");
+    if (!$biblio->showInOpac()) {
+      $biblio = $biblioQ->doQuery($bibid=0);
+      $biblioFlds = $biblio->getBiblioFields();
+    }
+  } else {
+    require_once("../shared/header.php");
+  }
+
+?>
+
+<?php echo $msg ?>
+<table class="primary">
+  <tr>
+    <th align="left" colspan="2" nowrap="yes">
+      <?php echo $loc->getText("biblioViewTble1Hdr"); ?>: <!-- Überschrift -->
+    </th>
+  </tr>
+  <tr>	
+    <td nowrap="true" class="primary" valign="top">
+      <?php echo $loc->getText("biblioViewMaterialType"); ?>: <!--Medienart-->
+    </td>
+    <td valign="top" class="primary">
+      <?php echo H($materialTypeDm[$biblio->getMaterialCd()]);?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap="true" class="primary" valign="top">
+      <?php echo $loc->getText("biblioViewCollection"); ?>:<!-- Genre-->
+    </td>
+    <td valign="top" class="primary">
+		<?php echo H($collectionDm[$biblio->getCollectionCd()]);?>
+    </td>
+  </tr>
+  <tr>
+    <td class="primary" valign="top">
+      <?php echo $loc->getText("biblioViewCallNmbr"); ?>:<!--Standort-->
+    </td>
+    <td valign="top" class="primary">
+      <?php echo listDescription('locations',H($biblio->getCallNmbr1())); ?>
+    </td>
+   </tr>
+   <tr>
+	 <td class="primary" valign="top">Signatur:
+	 </td>
+	 <td class="primary" valign="top">
+      <?php echo H($biblio->getCallNmbr2()); ?> <!--Signatur-->
+      <?php //echo H($biblio->getCallNmbr3()); ?><!--da steht /sollte nichts stehen --> 
+    </td>
+  </tr>
+  <tr>
+    <td class="primary" valign="top">
+      <?php printUsmarcText(245,"a",$marcTags, $marcSubflds, FALSE);?>: <!-- Titel -->
+    </td>
+    <td valign="top" class="primary">
+      <?php if (isset($biblioFlds["245a"])) echo H($biblioFlds["245a"]->getFieldData());?>
+    </td>
+  </tr>
+  <tr>
+    <td class="primary" valign="top">
+      <?php printUsmarcText(245,"b",$marcTags, $marcSubflds, FALSE);?>: <!--Untertitel -->
+    </td>
+    <td valign="top" class="primary">
+      <?php if (isset($biblioFlds["245b"])) echo H($biblioFlds["245b"]->getFieldData());?>
+    </td>
+  </tr>
+  <tr>
+    <td class="primary" valign="top">
+      <?php printUsmarcText(100,"a",$marcTags, $marcSubflds, FALSE);?>: <!-- Autor -->
+    </td>
+    <td valign="top" class="primary">
+      <?php if (isset($biblioFlds["100a"])) echo H($biblioFlds["100a"]->getFieldData());?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap="true" class="primary" valign="top">
+      <?php printUsmarcText(245,"c",$marcTags, $marcSubflds, FALSE);?>: <!-- Urheberangaben -->
+    </td>
+    <td valign="top" class="primary">
+      <?php if (isset($biblioFlds["245c"])) echo H($biblioFlds["245c"]->getFieldData());?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap="true" class="primary" valign="top">
+      <?php echo $loc->getText("biblioViewOpacFlg"); ?>: <!-- OPAC Flag -->
+    </td>
+    <td valign="top" class="primary">
+      <?php if ($biblio->showInOpac()) {
+        echo $loc->getText("biblioViewYes");
+      } else {
+        echo $loc->getText("biblioViewNo");
+      }?>
+    </td>
+  </tr>
+</table>
+<br />
+
+<?php
+  #****************************************************************************
+  #*  Show picture of the Bibliography if defined
+  #****************************************************************************
+if (isset($biblioFlds["902a"]))
+{
+?>
+<table class="primary">
+  <tr>
+    <th align="left" colspan="2" nowrap="yes">
+      <?php echo $loc->getText("biblioViewPictureHeader"); ?>:
+    </th>
+  </tr>
+  <tr>	
+    <td nowrap="true" class="primary" valign="top">
+      <?php printUsmarcText(902,"a",$marcTags, $marcSubflds, FALSE);?>:
+    </td>
+    <td valign="top" class="primary">
+      <img src="../pictures/<?php echo $biblioFlds["902a"]->getFieldData();?>" width="150">
+    </td>
+  </tr>
+</table>
+<br />
+<?
+}
+
+  #****************************************************************************
+  #*  Show copy information
+  #****************************************************************************
+  if ($tab == "cataloging") { ?>
+    <a href="../catalog/biblio_copy_new_form.php?bibid=<?php echo HURL($bibid);?>&reset=Y">
+      <?php echo $loc->getText("biblioViewNewCopy"); ?></a><br/>
+    <?php
+    $copyCols=7;
+  } else {
+    $copyCols=5;
+  }
+
+  $copyQ = new BiblioCopyQuery();
+  $copyQ->connect();
+  if ($copyQ->errorOccurred()) {
+    $copyQ->close();
+    displayErrorPage($copyQ);
+  }
+  if (!$copy = $copyQ->execSelect($bibid)) {
+    $copyQ->close();
+    displayErrorPage($copyQ);
+  }
+?>
+
+<h1><?php echo $loc->getText("biblioViewTble2Hdr"); ?>:</h1>
+<table class="primary">
+  <tr>
+    <?php if ($tab == "cataloging") { ?>
+      <th colspan="2" nowrap="yes">
+        <?php echo $loc->getText("biblioViewTble2ColFunc"); ?>
+      </th>
+    <?php } ?>
+    <th align="left" nowrap="yes">
+      <?php echo $loc->getText("biblioViewTble2Col1"); ?> <!-- Mediennummer header -->
+    </th>
+    <!--<th align="left" nowrap="yes">
+      <?php echo $loc->getText("biblioViewTble2Col2"); ?> <!--Beschreibung header--
+    </th>-->
+    <th align="left" nowrap="yes">
+      <?php echo $loc->getText("biblioViewTble2Col3"); ?> <!-- Status header -->
+    </th>
+    <th align="left" nowrap="yes">
+      <?php echo "Datum Ausleihe"/*$loc->getText("biblioViewTble2Col4")*/; ?><!-- ausgeliehen am -->
+    </th>
+    <th align="left" nowrap="yes">
+      <?php echo $loc->getText("biblioViewTble2Col5"); ?><!-- Rückgabe-->
+    </th>
+  </tr>
+  <?php
+    if ($copyQ->getRowCount() == 0) { ?>
+      <tr>
+        <td valign="top" colspan="<?php echo H($copyCols); ?>" class="primary" colspan="2">
+          <?php echo $loc->getText("biblioViewNoCopies"); ?>
+        </td>
+      </tr>      
+    <?php } else {
+      $row_class = "primary";
+      while ($copy = $copyQ->fetchCopy()) {
+  ?>
+    <tr>
+      <?php if ($tab == "cataloging") { ?>
+        <td valign="top" class="<?php echo H($row_class);?>"> 
+          <a href="../catalog/biblio_copy_edit_form.php?bibid=<?php echo HURL($copy->getBibid());?>&amp;copyid=<?php echo H($copy->getCopyid());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("biblioViewTble2Coledit"); ?></a>
+        </td>
+        <td valign="top" class="<?php echo H($row_class);?>">
+          <a href="../catalog/biblio_copy_del_confirm.php?bibid=<?php echo HURL($copy->getBibid());?>&amp;copyid=<?php echo HURL($copy->getCopyid());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("biblioViewTble2Coldel"); ?></a>
+        </td>
+      <?php } ?>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($copy->getBarcodeNmbr()); ?>
+      </td>
+     <!-- <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($copy->getCopyDesc()); ?> <!--Beschreibung -- vieleicht standort angabe für buch --
+      </td> -->
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php //echo H($biblioStatusDm[$copy->getStatusCd()]); 
+        
+         /*****NEU************************************ bei ausgeliehen Medien Link auf ausleihe historie zeigen **************************************************************/
+        
+        $lended=listLendedStatus($bibid,H($copy->getBarcodeNmbr()));
+       
+        if ($lended == "out" )
+
+        {
+			 //$get=H($copy->getBarcodeNmbr()); 
+			 $mbrid = lendedExemplares(H($copy->getBarcodeNmbr()));
+			 $link_to_medium="<a href=\"../circ/mbr_view.php?mbrid=$mbrid\" >".H($biblioStatusDm[$copy->getStatusCd()])."</a>";	
+			 echo $link_to_medium;
+		}
+		else
+		{
+			echo H($biblioStatusDm[$copy->getStatusCd()]);
+		}
+		/************************************************************************************************************************************************************************/
+		
+		?>
+      </td>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($copy->getStatusBeginDt()); ?>
+      </td>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($copy->getDueBackDt()); ?>
+      </td>
+    </tr>      
+  <?php
+        # swap row color
+        if ($row_class == "primary") {
+          $row_class = "alt1";
+        } else {
+          $row_class = "primary";
+        }
+      }
+      $copyQ->close();
+    } ?>
+</table>
+
+
+
+
+
+<br />
+<table class="primary">
+  <tr>
+    <th align="left" colspan="2" nowrap="yes">
+      <?php echo $loc->getText("biblioViewTble3Hdr"); ?>: <!--zusätzliche Medieninfos-->
+    </th>
+  </tr>
+  <!---------------------------------------Schlagwörter ---------------------------------------------------------------------->
+  
+  <?php   $slogan_string =  list_values_from_Table1('biblio',$bibid,'topic1') ;
+	//printUsmarcInputText(650,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds,FALSE,OBIB_TEXT_CNTRL);//<!--Schlagwörter-->
+	$slogan_array = explode(";",$slogan_string);
+	
+	?>
+	<tr>
+		<td class="primary" valign="left">Schalgw&ouml;rter:
+		</td>
+		<td class="primary" valign="left"><?php if(sizeof($slogan_array)>=1){echo $slogan_array[0];}?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		</td>
+		<td class="primary" valign="left"><?php if(sizeof($slogan_array) >=2){ echo $slogan_array[1];}?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		</td>
+		<td class="primary" valign="left"><?php if(sizeof($slogan_array) >=3){ echo $slogan_array[2];}?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		</td>
+		<td class="primary" valign="left"><?php  if(sizeof($slogan_array) >=4){echo $slogan_array[3];}?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		</td>
+		<td class="primary" valign="left"><?php if(sizeof($slogan_array) >=5){echo $slogan_array[4];}?>
+		</td>
+	</tr>
+	
+	<!-------------------------------------Fertigkeiten -------------------------------------------------->
+	
+	<tr>
+		<td class="primary" valign="left">Fertigkeiten:
+		</td>
+		<td class="primary" valign="left"><?php  echo listDescription('nt_fertigkeiten',list_values_from_Table1('biblio',$bibid,'topic2'));?>
+		</td>
+	</tr>
+	<tr>
+		<td class="primary" valign="left">Sprache:
+		</td>
+		<td class="primary" valign="left"><?php  echo listDescription('nt_sprachen',list_values_from_Table1('biblio',$bibid,'topic3'));?>
+		</td>
+	</tr>
+	<tr>
+		<td class="primary" valign="left">Niveau:
+		</td>
+		<td class="primary" valign="left"><?php  echo list_values_from_Table1('biblio',$bibid,'topic5');?>
+		</td>
+	</tr>
+	<tr>
+		<td class="primary" valign="left"><?php echo listDescriptionSubfield('20','a');?>:
+		</td>
+		<td class="primary" valign="left"><?php echo listFieldData($bibid,'20','a');?>
+		</td>
+	</tr>
+	<tr>
+		<td class="primary" valign="left"><?php echo listDescriptionSubfield('130','u');?>:
+		</td>
+		<td class="primary" valign="left"><?php echo listFieldData($bibid,'130','u');?>
+		</td>
+	</tr>
+	<tr>
+		<td class="primary" valign="left"><?php echo listDescriptionSubfield('260','a');?>:
+		</td>
+		<td class="primary" valign="left"><?php echo listFieldData($bibid,'260','a');?>
+		</td>
+	</tr>
+	<tr>
+		<td class="primary" valign="left"><?php echo listDescriptionSubfield('260','b');?>:
+		</td>
+		<td class="primary" valign="left"><?php echo listFieldData($bibid,'260','b');?>
+		</td>
+	</tr>
+	<tr>
+		<td class="primary" valign="left"><?php echo listDescriptionSubfield('260','c');?>:
+		</td>
+		<td class="primary" valign="left"><?php echo listFieldData($bibid,'260','c');?>
+		</td>
+	</tr>
+	<tr>
+		<td class="primary" valign="left"><?php echo listDescriptionSubfield('520','a');?>:
+		</td>
+		<td class="primary" valign="left"><?php echo listFieldData($bibid,'520','a');?>
+		</td>
+	</tr>
+	<tr>
+		<td class="primary" valign="left"><?php echo listDescriptionSubfield('901','e');?>:
+		</td>
+		<td class="primary" valign="left"><?php echo listFieldData($bibid,'901','e');?>
+		</td>
+	</tr>
+	<tr>
+		<td class="primary" valign="left"><?php echo listDescriptionSubfield('903','a');?>:
+		</td>
+		<td class="primary" valign="left"><?php echo listFieldData($bibid,'903','a');?>
+		</td>
+	</tr>
+<!-- <?php
+ /*  
+    $displayCount = 0;
+    foreach ($biblioFlds as $key => $field) {
+      if (($field->getFieldData() != "") 
+		&& ($key != "")
+        && ($key != "245a")
+        && ($key != "245b")
+        && ($key != "245c")
+        && ($key != "902a")
+        && ($key != "100a")) {
+        $displayCount = $displayCount + 1;
+  ?>
+        <tr>
+          <td valign="top" class="primary">//test//----
+            <?php printUsmarcText($field->getTag(),$field->getSubfieldCd(),$marcTags, $marcSubflds, FALSE);?>:
+          </td>
+          <td valign="top" class="primary"><?php echo H($field->getFieldData()); ?></td>
+        </tr>      
+  <?php
+      }
+    }
+    if ($displayCount == 0) {
+  ?>
+        <tr>
+          <td valign="top" class="primary" colspan="2">
+            <?php echo $loc->getText("biblioViewNoAddInfo"); ?>
+          </td>
+        </tr>      
+  <?php
+    }
+  */?>-->
+</table>
+
+
+<?php require_once("../shared/footer.php"); ?>

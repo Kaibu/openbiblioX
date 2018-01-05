@@ -1,0 +1,110 @@
+[
+  {
+    "version" : "0.1.3",
+    "releaseDate" : "2016-12-01",
+    "added" : [],
+    "changed" : [
+      "Beim ausleihen von Medien kann nun die Dauer in Tagen angegeben werden",
+      "Überfällige Medien werden nur von Studenten angezeigt",
+      "Benutzer Ansicht komplett neues Design"
+    ],
+    "security" : [],
+    "fixed" : [
+      "Report Index Link auf ausgeliehene Medien korrigiert",
+      "Medien Link in Report",
+      "Historie Status"
+    ],
+    "removed" : [
+      "Medien Eingangsablage entfernt"
+    ]
+  },
+  {
+    "version" : "0.1.2",
+    "releaseDate" : "2016-11-16",
+    "added" : [
+      "Schnelle Suche findet Signatur (Signatur muss komplett sein, z.B. 3.3.4.12"
+    ],
+    "changed" : [],
+    "security" : [],
+    "fixed" : [
+      "Ordnung Bericht Overview behoben"
+    ],
+    "removed" : []
+  },
+  {
+    "version" : "0.1.2",
+    "releaseDate" : "2016-10-27",
+    "added" : [
+      "Signatur 8.8.4.* (Sachbuch)",
+      "Funktion zum finden von Tags",
+      "Möglichkeit im Medien Report sortierung nach Datum zu invertieren"
+    ],
+    "changed" : [
+      "Titel hat höheres Gewicht in schneller Suche",
+      "Anzeige des Namens eines Nutzers im Report"
+    ],
+    "security" : [],
+    "fixed" : [
+      "Bild beim Druck des Nutzervertrags",
+      "Medien mit nur einem Sprach Level error"
+    ],
+    "removed" : []
+  },
+  {
+    "version" : "0.1.1",
+    "releaseDate" : "2016-10-21",
+    "added" : [
+      "Namen und Tag suche können nun mit Tab und Enter bedient werden",
+      "Neuer Header (Öffnungszeiten)",
+      "Neuer Report: Ausleihhistorie",
+      "Neuer Report: Vorbestellungen"
+    ],
+    "changed" : [
+      "Autoren Format in Buch API angepasst (Name,Vorname / Name,Vorname / ...)",
+      "Medien Ansicht Design angepasst",
+      "Autofocus in mehreren Formularen gesetzt"
+    ],
+    "security" : [],
+    "fixed" : [],
+    "removed" : []
+  },
+  {
+      "version" : "0.1.0",
+      "releaseDate" : "2016-10-17",
+      "added" : [
+        "Neue normale Medien Suche",
+        "Neue erweiterte Medien Suche",
+        "Schnelle Benutzer Suche",
+        "Neues Berichte Dashboard",
+        "Medien Import von JSON Liste",
+        "Bootstrap Design",
+        "Zeiterfassung und Auswertung",
+        "Changelog",
+        "Möglichkeit Medien aus Eingangsablage zu entfernen"
+      ],
+      "changed" : [
+        "Berichte komplett überarbeitet",
+        "Backend zum speichern von Medien",
+        "Alte mysql API durch mysqli ersetzt",
+        "Alle Navigationen nun dynamisch"
+      ],
+      "security" : [
+        "Fixed unvalidated redirect",
+        "XSS in member applications",
+        "Potential XSS in BiblioSearch and Checkin form",
+        "Local File inclusion in Layout",
+        "XSS in Help header"
+      ],
+      "fixed" : [
+        "Funktion Ähnliches Neu funktioniert wieder",
+        "Mod Query Funktionen",
+        "RegEx Problem in BiblioSearchQuery (OB #d7e2096)"
+      ],
+      "removed" : [
+        "USMARC Funktionen",
+        "Alte erweiterte Suche",
+        "Viele ungenutzte Funktionen/Dateien"
+      ]
+    }
+]
+

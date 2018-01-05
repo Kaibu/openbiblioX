@@ -1,0 +1,523 @@
+<?php
+/**
+* autor: Rene Knaebel
+*
+* date: 2013-01-05
+* 
+**/
+
+// ---------------------------------------------------------------------
+// ------------------- Datenbank Zugriff -------------------------------
+// ---------------------------------------------------------------------
+
+$DBHOST = "localhost";
+$DBNAME = "openbiblio";
+$DBUSER = "shks";
+$DBPASS = "Fo!37%.x";
+
+// --- Tabellen ---
+// Medien 
+$BIBLIO = "biblio";
+// Exemplare
+$COPY = "biblio_copy";
+//
+
+//echo "<!-- TESTBLUB -->";
+
+// ---------------------------------------------------------------------
+// ------------------- Datenbank Funktionen ----------------------------
+// ---------------------------------------------------------------------
+
+//
+// Verbindung zur DB aufbauen
+// 
+function connect_to_database() 
+{  
+	// Oben definierte Variablen global verfügbar machen
+	global $DBHOST, $DBNAME, $DBUSER, $DBPASS;
+	
+	// Versuch Verbindung zur DB aufzubauen
+	$connID		 = @mysql_connect($DBHOST, $DBUSER, $DBPASS);
+	if ($connID) 
+	{
+		// wenn erfolgreich, dann wird Datenbankname ausgewählt:
+		mysql_select_db($DBNAME);
+		return $connID;
+	} 
+	else
+	{
+		// Bei Fehler: Meldung und Abbruch
+		echo "Error: Keine Verbindung zur Datenbank möglich";
+		exit();
+	}
+}
+
+/*
+ * Medien 
+ * insert, update, delete
+ * 
+ * nt_fertigkeiten, nt_sprachen, nt_sprachniveau
+ *  
+ */
+ /*katalogisierungs funktion --> neues medium anlegen im aufbau*/
+function insert_medium($data){
+	$data[0] = date('YmdHis', time());
+	$data[1] = date('YmdHis', time());
+	$data[2] = "2"; // User id funkrion muss noch geschrieben werden
+	db_query("INSERT INTO biblio(create_date,last_change_date,last_change_userid,material_cd,collection_cd,call_nmbr1,call_nmbr2,call_nmbr3,title,title_reminder,responsibility_stmt,author,topic1,topic2,topic3,topic4,topic5,opac_flg)
+	VALUES ($data[0],'$data[1],$data[2],$data[3],$data[4],$data[5],$data[6],$data[7],$data[8],$data[9],$data[10],$data[11],$data[12],$data[13],$data[14],$data[15],$data[16],$data[17],$data[18])");
+
+	
+
+	 
+	
+}
+
+// 
+// 
+//
+function db_biblio_insert($data)
+//
+// data: array	(
+//				isbn, material, systematic, location, signature, 
+//				additional_sig, skills, language,
+//			 	niveau, opac_flg, title, author, 
+//	 			)
+//
+{
+	global $BIBLIO;
+	$db = connect_to_database();
+/*	mysql_query("INSERT INTO 
+				$BIBLIO(create_dt, last_change_dt, last_change_userid,
+						material_cd, collection_cd, call_nmbr1,
+						call_nmbr2, call_nmbr3, title, author, topic1,
+						topic2, topic3, topic4, topic5, opac_flg)
+				VALUES(	NOW(), NOW(),
+						$data['isbn'], 
+						$data['material'], 
+						$data['systematic'], 
+						$data['location'], 
+						$data['signature'], 
+						$data['additional_sig'], 
+						$data['skills'], 
+						$data['niveau'],
+						//$data['isbn'], 
+						//$data['isbn'],  				
+				)");
+*/
+}
+
+//
+// 
+//
+function db_show_biblio()
+{
+	global $BIBLIO;
+	$tabelle = "<table id=\"user_table\" style=\"font-size:10px;\" border=\"1\">\n";
+	$result = db_query("SELECT * FROM $BIBLIO LIMIT 10");
+	if($result)
+	{
+	  $row = mysql_fetch_assoc($result);
+	  foreach($row as $name => $val)
+	  {
+		  $tabelle .= "<th>$name</th>";
+	  }
+      while($row)
+      {
+      	$tabelle .= "<tr>\n\t";
+      	foreach($row as $val)
+      	{
+			if(!$val)
+			{
+				$val = '-';
+			}				
+			$tabelle .= "<td>".$val."</td>";
+		}
+		$tabelle .= "\n</tr>\n";
+		$row = mysql_fetch_assoc($result);
+      }
+	}
+	$tabelle .= "</table>\n";
+	return $tabelle;
+}
+
+function db_show_biblio_value($id){
+		global $BIBLIO;
+		$sql = db_query("SELECT * FROM $BIBLIO WHERE call_nmbr3 = '$id' ");
+		//echo $sql;
+	
+		$tabelle = "<fieldset><table>";//ausgeben als tabelle wo stärke =1
+		$tabelle .= "<tr><th>Aktion</th><th>bibid</th><th>create_td</th><th>last_change_dt</th><th>last_change_userid</th>
+					<th>Materialart</th><th>Genre</th><th>Standort</th><th>Signatur</th><th>Mediennummer</th><th>Title</th>
+					<th>title_remainder</th><th>resp_stmt</th><th>Autor</th><th>Schlagw&ouml;rter</th><th>Fertigkeiten</th><th>Sprache</th>
+					<th>Zusatz/Abstract</th><th>Niveau</th><th>opac_flg</th></tr>";
+					
+		
+		//$c=0;
+			$class="alt1";
+			while($row = mysql_fetch_object($sql)){
+				
+				//if($c==0){$class="alt1";}
+				//if($c==1){$class="alt2";}
+				$bibident=mysql_fetch_array(mysql_query("SELECT bibid FROM biblio WHERE call_nmbr3='$id'")) OR die (mysql_error());
+				
+				$tabelle.="<tr class=\"".$class."\">"; 
+				$tabelle.="<td><br><a href=\"/bibo/catalog/biblio_edit.php?bibid=$bibident[0]\">bearbeiten</a></td>";
+				$tabelle.="<td>".$row->bibid."</td>";
+				$tabelle.="<td>".$row->create_dt."</td>";
+				$tabelle.="<td>".$row->last_change_dt."</td>";
+				$tabelle.="<td>".$row->last_change_userid."</td>";
+				$tabelle.="<td>".$row->material_cd."</td>";
+				$tabelle.="<td>".$row->collection_cd."</td>";
+				$tabelle.="<td>".$row->call_nmbr1."</td>";
+				$tabelle.="<td>".$row->call_nmbr2."</td>";
+				$tabelle.="<td>".$row->call_nmbr3."</td>";
+				$tabelle.="<td>".$row->title."</td>";
+				$tabelle.="<td>".$row->title_remainder."</td>";
+				$tabelle.="<td>".$row->responsibility_stmt."</td>";
+				$tabelle.="<td>".$row->author."</td>";
+				$tabelle.="<td>".$row->topic1."</td>";
+				$tabelle.="<td>".$row->topic2."</td>";
+				$tabelle.="<td>".$row->topic3."</td>";
+				$tabelle.="<td>".$row->topic4."</td>";
+				$tabelle.="<td>".$row->topic5."</td>";
+				$tabelle.="<td>".$row->opac_flg."</td>";
+				
+				$tabelle.="</tr>";	
+				if($class=="alt1"){$class=""; $class="alt2";}
+				else{$class=""; $class="alt1";}
+				
+		}
+		$tabelle.="</table></fieldset>";
+
+		return $tabelle;
+}
+/*********************************Tabelle******************anzeige der Personen die Exemplar ausgeliehen haben***********************************/
+
+function lendedExemplares($barcode)
+{
+	$value=mysql_query("SELECT copyid,bibid FROM biblio_copy WHERE barcode_nmbr = '$barcode' ")or die ("Fehler");
+	$query=mysql_fetch_array($value);
+	$copy = $query[0]; 	
+	$bibid =$query[1];
+	$value=mysql_query("SELECT mbrid FROM  biblio_status_hist WHERE bibid = '$bibid' AND copyid = '$copy'")or die ("Fehler");
+	$query=mysql_fetch_array($value);
+	$memberid =$query[0];
+	/*$sql=mysql_query("SELECT last_name,first_name,address,home_phone,email FROM  member WHERE mbrid = '$memberid' ")or die ("Fehler");	
+	$tabelle = "<fieldset><table>";//ausgeben als tabelle wo stärke =1
+	$tabelle .= "<tr><th>Nachname</th><th>Vorname</th><th>Addresse</th><th>Telefonnummer</th><th>e-mail</th>";	
+	$class="alt1";
+	while($row = mysql_fetch_object($sql)){
+		//if($c==0){$class="alt1";}
+		//if($c==1){$class="alt2";}
+		$tabelle.="<tr class=\"".$class."\">"; 
+		$tabelle.="<td>".$row->last_name."</td>";
+		$tabelle.="<td>".$row->first_name."</td>";
+		$tabelle.="<td>".$row->address."</td>";
+		$tabelle.="<td>".$row->home_phone."</td>";
+		$tabelle.="<td>".$row->email."</td>";
+		$tabelle.="</tr>";	
+		if($class=="alt1"){$class=""; $class="alt2";}
+		else{$class=""; $class="alt1";}	
+	}
+	$tabelle.="</table></fieldset>";*/
+
+	return $memberid;
+	
+}
+
+/***********************************************************************************************************************/
+//
+// 
+//
+function db_query($sql)
+{
+	//$db = connect_to_database();
+    //mysql_query("SET NAMES `utf8` AND CHARACTER_SET_CLIENT = 'utf8' AND CHARACTER_SET_CONNECTION = 'utf8' AND CHARACTER_SET_RESULTS = 'utf8'");
+	//$result = mysql_query(utf8_decode($sql));
+	$result = mysql_query($sql);
+    if($result)
+	{
+		return $result;
+	}
+	return False;
+}
+
+function list_slogans(){
+	
+	$sql=mysql_query('SELECT DISTINCT topic1 FROM biblio WHERE topic1 !=""') or die(mysql_error);
+	
+	
+	while ($list=mysql_fetch_assoc($sql)){
+		foreach (explode(";", $list['topic1']) as $item){
+			$slogan_list[]=$item;
+			}		
+	}
+	$slogan_list=array_unique($slogan_list);
+	sort($slogan_list);
+	$slogan_list=implode(";",$slogan_list);
+	$slogan_list=addslashes($slogan_list);
+	return $slogan_list;	
+}
+
+
+function search_slogans($input,$liste){	
+	$slogan_matches="";
+	if($input!=""){		
+		
+		foreach($liste as $slogans){
+			
+			$pattern = "/^".$input."/i";
+			if(preg_match($pattern, $slogans)){
+				//echo "<option value='". $slogans."</option>";
+				$slogan_matches.=$slogans.";";
+			}
+		}
+	}
+	return $slogan_matches ;			
+}
+
+
+
+/* die funktion nimmt sich die descriptionfelder einer Tabelle und gibt sie als Select ->option aus */	
+function list_description($table){
+    $value=mysql_query("SELECT code, description FROM $table ")or die ("Fehler");
+   // echo $POST;
+		while($row = mysql_fetch_array($value)){
+			echo "<option value='". $row['code'] ."'>".$row['description']."</option>";
+			
+		}
+}
+
+/*************gibt die slogans als options aus**************************************/
+function list_matches($matches){
+	   foreach ($matches as $slogans){
+		   echo "<option value='".$slogans."'></option>";
+	   }
+  }
+ /***************gibt einen Spalten wert für Primerykey wieder bzw. in WeakEntity Spalte+bibid+Spalte => Ergebnis************************/
+function list_values_from_Table1($table,$bibid,$column){
+	
+	$value=mysql_query("SELECT $column FROM $table WHERE bibid = '$bibid' ")or die ("Fehler");
+	$query=mysql_fetch_array($value);
+	
+	return $query[0];
+}
+/**************listet ausgeliehende Medien auf***********************/
+function listLendedStatus($bibid,$barcode_nmbr)
+{
+	$value=mysql_query("SELECT copyid FROM biblio_copy WHERE bibid = '$bibid' AND barcode_nmbr = '$barcode_nmbr'  ")or die ("Fehler");
+	$query=mysql_fetch_array($value);
+	$copyid = $query[0];
+	
+	$value=mysql_query("SELECT status_cd FROM biblio_status_hist WHERE bibid = '$bibid' AND copyid = '$copyid' ")or die ("Fehler");
+	$query=mysql_fetch_array($value);
+	
+	return $query[0];
+}
+
+
+
+function list_values_from_Table2($table,$bibid,$tag,$subfield_cd){
+	
+	$value=mysql_query("SELECT field_data FROM $table WHERE bibid = '$bibid' AND tag = '$tag' AND subfield_cd = '$subfield_cd' ")or die ("Fehler");
+	$query=mysql_fetch_array($value);
+	
+	return $query[0];
+}	 
+
+/* gibt Beschreibung zurück */
+function listDescription($table,$code)
+{
+	$value=mysql_query("SELECT description FROM $table WHERE Code = '$code' ")or die ("Fehler");
+	$query=mysql_fetch_array($value);
+	
+	return $query[0];
+}
+
+function listDescriptionSubfield($tag,$subfield)
+{
+	$value=mysql_query("SELECT description FROM usmarc_subfield_dm WHERE tag = '$tag' AND subfield_cd = '$subfield' ")or die ("Fehler");
+	$query=mysql_fetch_array($value);
+	
+	return $query[0];
+}
+function listFieldData($bibid,$tag,$subfield)
+{
+	$value=mysql_query("SELECT field_data FROM biblio_field WHERE tag = '$tag' AND subfield_cd = '$subfield' AND bibid = '$bibid' ")or die ("Fehler");
+	$query=mysql_fetch_array($value);
+	
+	return $query[0];
+}
+//
+// OptionFelder mit Selection als String erzeugen
+//
+// MaterialListe:
+// $name: Name der SelectionListe, $checked: ID des vorselektierten Eintrags
+function db_code_sel($name, $sql, $checked = -1)
+{
+    $out = "<option value='0'>-- Bitte auswaehlen ---</option>";
+    $rows = db_query($sql);
+    
+    while($row = mysql_fetch_assoc($rows))
+    {
+        if($checked >= 0 && (int)$row['code'] == $checked)
+            $out .= sprintf("<option value='%s' selected='selected'>%s</option>",
+                            $row['code'], $row['description']);
+        else
+            $out .= sprintf("<option value='%s'>%s</option>",
+                            $row['code'], $row['description']);
+    }
+    return sprintf("<select name='%s'>%s</select>", $name, $out);
+}
+function db_material_sel($name, $checked = -1)
+{
+    $sql = "SELECT code, description FROM material_type_dm";
+    return db_code_sel($name, $sql, $checked);
+}
+function db_collection_sel($name, $checked = -1)
+{
+    $sql = "SELECT code, description FROM collection_dm";
+    return db_code_sel($name, $sql, $checked);
+}
+function db_location_sel($name, $checked = -1)
+{
+    $sql = "SELECT location_number AS code, description FROM locations";
+    return db_code_sel($name, $sql, $checked);
+}
+function db_skills_sel($name, $checked = -1)
+{
+    $sql = "SELECT DISTINCT code, description FROM nt_fertigkeiten ORDER BY code";
+    return db_code_sel($name, $sql, $checked);
+}
+function db_language_sel($name, $checked = -1)
+{
+    $sql = "SELECT DISTINCT code, description FROM nt_sprachen ORDER BY code";
+    return db_code_sel($name, $sql, $checked);
+}
+function db_niveau_sel($name,$checked = -1)
+{
+	$sql = "SELECT code, description FROM nt_niveau ORDER BY code";
+	return db_code_sel($name,$sql,$checked);
+}
+function db_physics_sel($name,$checked=-1)
+{
+	$sql = "SELECT code, description FROM nt_physics ORDER BY code";
+	return db_code_sel($name,$sql,$checked);
+}
+
+function db_opacflg_sel($name, $checked = "")
+{
+    $out = "";
+    $sql = "SELECT DISTINCT opac_flg AS description FROM biblio";
+    $rows = db_query($sql);
+    while($row = mysql_fetch_assoc($rows))
+    {
+        if($checked != "" && $row['description'] == $checked)
+            $out .= sprintf("<option value='%s' selected='selected'>%s</option>",
+                            $row['description'], $row['description']);
+        else
+            $out .= sprintf("<option value='%s'>%s</option>",
+                            $row['description'], $row['description']);
+    }
+    return sprintf("<select name='%s'>%s</select>", $name, $out);
+}
+
+/*************abgewandelt **********************/
+function db_location_sel2($name, $checked = -1)
+{
+    $sql = "SELECT code, description FROM locations";
+    return db_code_sel($name, $sql, $checked);
+}
+/****************************INSERT Funktion für Secure_copy_FLG == on ****************Folgende daten sollen nicht übernommen werde ISBN, Verlag, Erscheinungsort, Erscheinungsjahr
+ *  mediennummer wird vom OPAC kreiert (6-stellig inkrement (Max(bibid)))**************************************************************************************************************/
+ 
+ 
+function catalog_insert_secure_copy(){
+}
+// 
+//
+
+//
+/***************Systematik/Genre joinabfrage zeigt signatur und systematik****************************************************************************************************/
+
+function getSystematicNumbers()
+{
+	$query="SELECT sig.category as main_sig, sig.sub_category as sub_sig, main_cat.description as main_category, sub_cat.description as sub_category  
+			FROM collection_dm sub_cat, nt_systematik_main_category main_cat, nt_systematik_signatur sig
+			WHERE sub_cat.code = sig.code   AND sig.category= main_cat.code 
+            Order BY main_sig ASC, sub_sig ASC";
+	
+	
+	
+	
+	return $query;
+}
+/***************************************/
+  
+
+
+/*************************return in selectfeld von suchanfrage $name -> neuer name des selectfeldes**************************************************************************/
+
+function listQuery($sql,$name,$checked = -1)
+{
+	$out = "<option value='0'>-- Bitte auswaehlen ---</option>";
+	$rows = db_query($sql);
+	
+	while($row = mysql_fetch_assoc($rows))
+	{
+		if($row['sub_sig'] == 1)
+		{
+			 $out .= sprintf("<option disabled='disabled' value='%s'> %s.%s</option>",
+					$row['main_sig'], $row['main_sig'],$row['main_category']);
+					
+			 $out .=sprintf("<option value='%s.%s'>&nbsp;&nbsp;&nbsp;%s</option>",
+					$row['main_sig'],$row['sub_sig'], $row['sub_category']);
+		}
+		else
+		{
+			
+			$sql="Select * from nt_systematik_signatur where code = '$checked'";
+			$toSelect=mysql_fetch_assoc(mysql_query($sql)) or die(mysql_error());
+			//test
+			if(($toSelect['category'] == $row['main_sig'] )&& ($toSelect['sub_category'] == $row['sub_sig']) && ($checked == $row['code'])){
+			
+			//if($checked > 0 && (int)$row['code'] == $checked)
+			//{	
+				
+				$out .=sprintf("<option value='%s.%s' select='selected'>&nbsp;&nbsp;&nbsp;%s</option>",
+					$row['main_sig'],$row['sub_sig'], $row['sub_category']);
+			}
+			else
+			{
+				$out .=sprintf("<option value='%s.%s'>&nbsp;&nbsp;&nbsp;%s</option>",
+						$row['main_sig'],$row['sub_sig'], $row['sub_category']);
+			}
+		}
+		$onchange=sprintf("onchange=\"listSignature(document.getElementById('%s').getElementsByTagName('option')[document.getElementById('%s').selectedIndex].value,'start_sig')\"",$name,$name);
+		//$onchange="";
+    }
+    return sprintf("<select id='%s' name='%s' %s>%s</select>",$name,$name, $onchange, $out);
+}
+
+/*****************************************************************************************************************************************************************************/
+
+
+
+function db_code_sel2($name, $sql, $checked)
+{
+    $out = "<option value='0'>-- Bitte auswaehlen ---</option>";
+    $rows = db_query($sql);
+    
+    while($row = mysql_fetch_assoc($rows))
+    {
+        if($checked > 0 && (int)$row['code'] == $checked)
+            $out .= sprintf("<option value='%s' selected='selected'>%s</option>",
+                            $row['code'], $row['description']);
+        else
+            $out .= sprintf("<option value='%s'>%s</option>",
+                            $row['code'], $row['description']);
+    }
+    return sprintf("<select name='%s'>%s</select>", $name, $out);
+}
+?>

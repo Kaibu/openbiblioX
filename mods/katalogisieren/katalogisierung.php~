@@ -1,0 +1,1072 @@
+<?php
+
+				/************TODO********************************************************************************************
+			   /*															/*
+			/* 		für css alles in sinvolle divtags packen !!															/*                                                															  */
+		   /************************************************************************************************************/
+
+        $isbn = "";
+        $key = "O3KJ3BJA";
+        $title = "";
+        connect_to_database() or die("Verbindung zur Datenbank nicht möglich!");
+        
+?>
+<table class="primary">
+	<tr>
+		<td align="center" valign="top" class="primary">
+		<img src="../images/catalog.png" border="0" width="30" height="30"></td>
+		<td class="primary"><h1>Katalogisierung</h1></td>
+	</tr>
+</table>	
+<!--<form id="form" class="isbn_suche" action="biblio_new.php" method="post">
+    ISBN:<input type="text" name="isbn"  value=""><p>
+    <input type="submit" name="search" value="suchen"></input>
+    <input type="reset" name="reset" value="abbrechen"></input>
+</form>-->
+
+<script type="text/javascript" src="../mods/lib/javascript.js"></script>
+
+<?php
+/************************************************************Test********************************************************/ 
+
+
+/***********************************************************marc daten von inetseite*********************************************************/	
+    
+    if(isset($_POST['search']))
+    {
+        
+        if(isset($_POST['isbn']))
+        {
+            $isbn=$_POST['isbn'];
+            $link="<a href=\"http://isbndb.com/api/books.xml?access_key=$key&index1=isbn&value1=$isbn\" target=\"blank\">Buch Daten<br>";
+            
+            $xml_object="http://isbndb.com/api/books.xml?access_key=$key&index1=isbn&value1=$isbn";
+            /**
+            * Hier wird geprüft ob die XML Datei existiert
+            */
+            //echo $link."<br/>\n";
+            
+            $objSites = simplexml_load_file($xml_object);
+            /**
+            * Mit der PHP Funktion simplexml_load_file()
+            * wird die XML Datei eingelesen und anschließend
+            * als Objekt in der Variable $xml_object gespeichert.
+            **/
+            $title=$objSites->BookList->BookData->Title;
+            /** Titel laden, wenn kein Titel dann kein treffer bei Suche**/
+            if($title)
+            {
+                $title=$objSites->BookList->BookData->Title;
+                $author=$objSites->BookList->BookData->AuthorsText;
+                $publisher=$objSites->BookList->BookData->PublisherText;
+                /**Zugriff auf tags mit -> ein tag weiter bis Ziel tag **/
+                
+				echo $title."<br/>\n";
+                echo $author."<br/>\n";
+                echo $publisher."<br/>\n";	
+                
+            }	
+            else
+            {
+            /**
+             * Falls die XML Datei nicht
+             * geöffnet werden konnte, brechen
+             * wir das Script mit exit() ab.
+            **/
+            //exit('Konnte '.$xml_object.' nicht öffnen.');
+            $mark="kein Eintrag gefunden";
+            echo "<br><span class=\"error\">".$mark."</span>";
+            }
+        }
+    }
+     /*******************************zurücksetzen der input felder************************************************************************/
+    if(isset($_POST['cancel'])){	
+		delete_POST();
+		$physics="0";
+    }
+    /******************************Variablen initialisieren****************************************************************/
+     $auswahl8="";
+     $select8="";
+    
+	if(isset($_POST['auswahl']) && ($_POST['material']!="0")){$auswahl=utf8_decode($_POST['auswahl']);}else{$auswahl="";}    //material ==zuordnung gewähltes element medien
+	if(isset($_POST['auswahl1'])&& ($_POST['genre']!="0")){$auswahl1=utf8_decode($_POST['auswahl1']);}else{$auswahl1="";}  //genre == zuordnugn gewähltes element genre
+	if(isset($_POST['auswahl2'])&& ($_POST['location']!="0")){$auswahl2=utf8_decode($_POST['auswahl2']);}else{$auswahl2="";}   //location == zuordnugn gewähltes element standort
+	if(isset($_POST['auswahl3'])&& ($_POST['skills']!="0")){$auswahl3=utf8_decode($_POST['auswahl3']);}else{$auswahl3="";}  //skills == zuordnugn gewähltes element fertigkeiten
+	if(isset($_POST['auswahl4'])&& ($_POST['language']!="0")){$auswahl4=utf8_decode($_POST['auswahl4']);}else{$auswahl4="";}   //language == zuordnugn gewähltes element sprache#
+	if(isset($_POST['auswahl5'])&& ($_POST['fromNiv']!="0")){$auswahl5=utf8_decode($_POST['auswahl5']);}else{$auswahl5="";}   //fromNiv == zuordnugn gewähltes element niveau von
+	if(isset($_POST['auswahl6'])&& ($_POST['toNiv']!="0")){$auswahl6=utf8_decode($_POST['auswahl6']);}else{$auswahl6="";}   //toNiv == zuordnugn gewähltes element  bis niveau
+	if(isset($_POST['auswahl7'])&& ($_POST['physics']!="0")) {$auswahl7=utf8_decode($_POST['auswahl7']);}else{$auswahl7="";} //seitenzahl, Speildauer ==zuordnung gewähltes element medien
+	if(isset($_POST['anzahl'])){
+		if(isset($_POST['auswahl8'])&& ($_POST['anzahl']!="6") && ($_POST['anzahl']>0)){$auswahl8=$_POST['anzahl']; $select8="selected";}
+		elseif (($_POST['anzahl']=="6")){$select8="selected";$auswahl8=$_POST['auswahl8']; } //anzahl der Sloganfelder//
+	}
+	if(isset($_POST['physics'])){$physics=$_POST['physics'];}else{$physics="";}
+    if(isset($_POST['material'])){$material=$_POST['material'];}else{$material="";}
+	isset($_POST['genre']) ? $genre = $_POST['genre'] : $genre = "";
+	if(isset($_POST['author'])){$author=utf8_decode($_POST['author']);}else{$author="";}
+	if(isset($_POST['location'])){$location=$_POST['location'];}else{$location="";}
+	if(isset($_POST['regal'])){$regal=utf8_decode($_POST['regal']);}else{$regal="";} /******************ist noch nicht in der Abfrage enthalten ********(Dennis)*****/
+	if(isset($_POST['additional_sig'])){$additional_sig=$_POST['additional_sig'];}else{$additional_sig="";}
+	if(isset($_POST['isbn'])){$isbn=$_POST['isbn'];}else{$isbn="";}
+	if(isset($_POST['title'])){$title=utf8_decode($_POST['title']);}else{$title="";}
+	if(isset($_POST['publisher'])){$publisher=utf8_decode($_POST['publisher']);}else{$publisher="";}
+	
+	/************************FERTIGKEITEN****************************************************************/
+	//if(isset($_POST['skills'])){$skills=$_POST['skills'];}else{$skills="";}
+	
+	if(isset($_POST['skills_hear'])){$skills_hear=$_POST['skills_hear'];}else{$skills_hear="";}
+	if(isset($_POST['skills_speak'])){$skills_speak=$_POST['skills_speak'];}else{$skills_speak="";}
+	if(isset($_POST['skills_write'])){$skills_write=$_POST['skills_write'];}else{$skills_write="";}
+	if(isset($_POST['skills_grammar'])){$skills_grammar=$_POST['skills_grammar'];}else{$skills_grammar="";}
+	if(isset($_POST['skills_write'])){$skills_read=$_POST['skills_write'];}else{$skills_read="";}
+	
+	if(isset($_POST['language'])){$language=$_POST['language'];}else{$language="";}
+	if(isset($_POST['fromNiv'])){$fromNiv=$_POST['fromNiv'];}else{$fromNiv="";}
+	if(isset($_POST['toNiv'])){$toNiv=$_POST['toNiv'];}else{$toNiv="";}
+	if(isset($_POST['hyperlink'])){$hyperlink=$_POST['hyperlink'];}else{$hyperlink="";}
+	
+	$niveau="$fromNiv-$toNiv";
+	$slogan="";
+	$exist_medium="";
+	$medium_nbr="";
+	$medium_nbr_check="";
+	$link_to_medium="";
+	$description_ph="";
+	$checked="";
+	$checked_secure_copy="";
+	$checked_skills_grammar="";
+	$checked_skills_hear="";
+	$checked_skills_speak="";
+	$checked_skills_write="";
+	$checked_skills_read="";
+	$bibid_check="";
+	$skills ="";
+	
+	if(isset($_POST['extra'])){$extra=utf8_decode($_POST['extra']);}else{$extra="";}
+	if(isset($_POST['isbn'])){$isbn=$_POST['isbn'];}else{$isbn="";}
+	if(isset($_POST['slogan0'])){$slogan0=utf8_decode($_POST['slogan0']);}else{$slogan0="";}
+	if(isset($_POST['slogan1'])){$slogan1=utf8_decode($_POST['slogan1']);}else{$slogan1="";}
+	if(isset($_POST['slogan2'])){$slogan2=utf8_decode($_POST['slogan2']);}else{$slogan2="";}
+	if(isset($_POST['slogan3'])){$slogan3=utf8_decode($_POST['slogan3']);}else{$slogan3="";}
+	if(isset($_POST['slogan4'])){$slogan4=utf8_decode($_POST['slogan4']);}else{$slogan4="";}
+	if(isset($_POST['medium_nbr'])){$medium_nbr=$_POST['medium_nbr'];}else{$medium_nbr="";}
+	if(isset($_POST['opacflg'])){$opac_flg=$_POST['opacflg'];}else{$opac_flg="";}
+	if(isset($_POST['secure_copy'])){$secure_copy=$_POST['secure_copy'];}else{$secure_copy="";}
+	if(isset($_POST['down_title'])){$down_title=utf8_decode($_POST['down_title']);}else{$down_title="";}
+	
+	if(isset($_POST['ph_description'])){$ph_description=$_POST['ph_description'];}else{$ph_description="";}
+	if(isset($_POST['public_lc'])){$public_lc=utf8_decode($_POST['public_lc']);}else{$public_lc="";}
+	if(isset($_POST['pb_year'])){$pb_year=$_POST['pb_year'];}else{$pb_year="";}
+	
+	
+	
+
+    /*Niveau*/
+   
+   /* if(($fromNiv!="0") && ($fromNiv!="6")){
+		$auswahl5=$fromNiv; 
+	}
+	if(($fromNiv=="0")or($fromNiv=="")){$auswahl5="";$select5="";$fromNiv1="";}
+    if(($toNiv!="0") && ($toNiv!="6")){
+		$auswahl6=$toNiv; 
+	}
+	if(($toNiv=="0")or($toNiv=="")){$auswahl6="";$select6="";$toNiv1="";}
+    if($fromNiv==6){$fromNiv=$auswahl5;}
+    if($toNiv==6){$toNiv=$auswahl6;}
+    
+    /*Dauer und Seitenanzahl*/
+   // echo"<br>physics :".$physics;
+    //echo"<br>description_ph :".$description_ph;
+    
+    /*Fertigkeiten*/
+    if($skills_hear or $skills_write or $skills_speak or $skills_grammar)
+    {
+    	$skills = 1;
+    }
+    else 
+    {
+    	$kills = 0;
+    }
+    echo "<br>skills ".$skills;
+    
+    if(($physics !="0")&&($physics !="3")){
+		if ($physics==1){$description_ph="Spieldauer";$auswahl7=$description_ph;}
+		if ($physics==2){$description_ph="Seitenanzahl";$auswahl7=$description_ph;}
+	}
+	else if ($physics=="3"){ 
+		$description_ph=$auswahl7;
+		if ($description_ph=="Spieldauer"){;$physics="1";$auswahl7=$description_ph;}
+		if ($description_ph=="Seitenanzahl"){$physics="2";$auswahl7=$description_ph;}
+	}
+	if(($physics=="0")or($physics=="")){ 
+		$auswahl7=""; 
+		$select7="";
+		$description_ph="";
+	}
+	/*
+	echo"<br>physics: ".$physics;
+	echo"<br>description_ph: ".$description_ph;
+	*/
+	/***********************************************************************/	
+	
+	$error1=""; $error2=""; $error3=""; $error4=""; $error5=""; $error6=""; $error7=""; $error8=""; $error9=""; $error10=""; $error11=""; $error12=""; $error13=""; $error14="";
+	$error16=""; $error15="";$error16="";$error17="";$error18="";$error19=""; $error20="";
+	/******************kontrolle der Eingaben ********FEHLER AUSGABE***********************************************************/
+	
+	/*****************raussuchen der Systematik *****************/
+	$systematics=getSystematicNumbers();
+	
+	
+	/**************************************************************/
+		
+    if(isset($_POST['eintragen'])){
+		  
+		if($isbn=="" && ($secure_copy!="on")){$error1="bitte ausf&uuml;llen";}
+		$muster='/^[0-9]*$/';
+		if($title==""){$error2="bitte ausf&uuml;llen";}
+		if($author=="" && ($secure_copy!="on")){$error3="bitte ausf&uuml;llen";}
+		if($publisher=="" && ($secure_copy!="on")){$error4="bitte ausf&uuml;llen";}
+		if($material=="0"){$error5="bitte ausf&uuml;llen";}
+		if($genre=="0"){$error6="bitte ausf&uuml;llen";}
+		if($location=="0"){$error7="bitte ausf&uuml;llen";}
+		if($regal==""){$error8="bitte ausf&uuml;llen";}
+		if($additional_sig==""){$error9="bitte ausf&uuml;llen";}
+		if($skills=="0"){$error10="bitte ausf&uuml;llen";}
+		if($language=="0"){$error11="bitte ausf&uuml;llen";}
+		if($niveau=="0-0"){$error12="bitte ausf&uuml;llen";}
+		if($medium_nbr==""&& ($secure_copy!="on")){$error13="bitte ausf&uuml;llen";}
+		if($slogan0==""){$error14="bitte ausf&uuml;llen";}
+		//if($down_title==""){$error15="bitte ausf&uuml;llen";}//optional
+		if($ph_description==""){$error16="bitte ausf&uuml;llen";}
+		if($public_lc=="" && ($secure_copy!="off")){$error17="bitte ausf&uuml;llen";}
+		if($pb_year=="" && ($secure_copy!="off")){$error18="bitte ausf&uuml;llen";}
+		/*optional*/
+		//if($extra==""){$error19="bitte ausf&uuml;llen";}
+		//if($hyperlink==""){$error20="bitte ausf&uuml;llen";}
+			
+		/**********auf richtigkeit der Datensätze prüfen *******************************************************/
+		
+			/*****************Fertigkeiten*************************/
+			
+			
+			echo "<br>grammar".$skills_grammar;
+			echo "<br>hear".$skills_hear;
+			echo "<br>read".$skills_read;
+			echo "<br>speak".$skills_speak;
+			echo "<br>write".$skills_write;
+			
+			if($skills_grammar!="" ){$checked_skills_grammar ="checked=\'checked\'";}
+			else {$ckecked_skills_grammar ="";}
+			
+			if($skills_hear!="" ){$checked_skills_hear ="checked=\'checked\'";}
+			else {$ckecked_skills_hear ="";}
+			
+			if($skills_read!="" ){$checked_skills_read ="checked=\'checked\'";}
+			else {$ckecked_skills_read ="";}
+			
+			if($skills_speak!="" ){$checked_skills_speak ="checked=\'checked\'";}
+			else {$ckecked_skills_speak ="";}
+			
+			if($skills_write!="" ){$checked_skills_write ="checked=\'checked\'";}
+			else {$ckecked_skills_gwrite ="";}
+			
+			
+		
+		
+		/**********Signatur***************/
+		$muster='/^[0-9]{1,2}.[0-9]{1,2}$/'; 
+		
+		if((preg_match($muster, $additional_sig,$wert))==0){;
+			$error9 = "<br>Keine g&uumlltige Signatur (Muster: 3.2.b)";
+			$additional_sig="";
+		}
+		/*************schlagwörter**Reihenfolge und Inalt********/
+		if($slogan0 && $slogan1){
+			$slogan="$slogan0;$slogan1";
+			if($slogan && $slogan2){
+				$slogan="$slogan;$slogan2";
+				if($slogan && $slogan3){
+					$slogan="$slogan;$slogan3";
+					if($slogan && $slogan4){
+						$slogan="$slogan;$slogan4";
+					}
+				}
+			}
+		}
+		else{ $slogan=$slogan0;}
+		
+		if(	(!$slogan0 &&($slogan1 or $slogan2 or $slogan3 or $slogan4)) or
+			($slogan0 && !$slogan1 && ($slogan2 or $slogan3 or$slogan4)) or
+			($slogan0 && $slogan1 && !$slogan2 && ($slogan3 or $slogan4)) or
+			($slogan0 && $slogan1 && $slogan2 && !$slogan3 && $slogan4)    ){ 
+				$error14="<br>bitte die Schlagwortfelder<br>der Reihe nach ausf&uuml;llen";$slogan="";
+		}
+		/******************niveau***Reihenfolge*******************/
+		
+		if($fromNiv!="0"){
+			if($toNiv=="0"){$niveau="$fromNiv-$fromNiv";}
+		}
+		if(($fromNiv=="0") && ($toNiv!="0")){$error12="<br>bitte Anfangsniveau eintragen";}
+		if($fromNiv && $toNiv){
+			$arr1=str_split($fromNiv,1);
+			$arr2=str_split($toNiv,1);
+			if($arr1[0] > $arr2[0]) {$error12="<br>Anfangsniveau gr&ouml;sser als Endniveau";}
+			else {
+				if (($arr1[0] == $arr2[0]) && ($arr1[1] > $arr2[1])){$error12="<br>Anfangsniveau gr&ouml;sser als Endniveau";}
+				else{
+					$niveau="$fromNiv-$toNiv";
+				}
+			}		
+		}
+		/*************************Mediennummer**********************************/
+		
+			
+			
+		 if(isset($_POST['medium_nbr']) && ($secure_copy !="on")){
+			$new=mysql_query("SELECT bibid FROM biblio_copy WHERE barcode_nmbr = '$medium_nbr'") OR die (mysql_error());
+			$query=mysql_fetch_array($new);
+			$medium_nbr_check=$query[0];
+			
+			if($medium_nbr_check!=""){ 
+				 $error13="<br>Diese Mediennummer existiert bereits:";
+				 $link_to_medium="<br><a href=\"../catalog/biblio_edit.php?bibid=$medium_nbr_check\" target=\"_blank\">zeige Medium</a>";	
+			}
+		}
+		
+	/*************************ISBNNUMMER*******Richtigkeit prüfen************************************/
+		
+			$search="-";
+			$replace="";
+			$isbn1=$isbn;
+			$isbn1=str_replace ($search ,$replace ,$isbn);
+			$muster='/^[0-9]{10,13}$/'; 
+			if(((preg_match($muster, $isbn1,$wert))==0) && ($secure_copy !="on")){;
+				$error1 = "<br>Keine g&uuml;ltige ISBN (10-13 Zahlen)";
+			}	
+			else{
+				/***********ISBN Suchen***Tag subfield_cd ***********/
+				$description_isbn="Internationale Standard Buch Nummer \(ISBN\)"; //tag, subfield_cd, repeatableflag für ISBN auslesen
+				$sql="SELECT tag,subfield_cd, repeatable_flg FROM usmarc_subfield_dm WHERE description='$description_isbn'";
+				$new=mysql_query($sql) OR die(mysql_error());
+				$query=mysql_fetch_array($new);
+				$tag_isbn=$query[0];
+				$subfield_cd_isbn =$query[1];
+				
+				/*echo "<br>tag: ".$tag_isbn;   
+				echo "<br>subfield_cd: ".$subfield_cd_isbn;*/
+				
+				/*auswählen*/
+				
+				$sql="SELECT bibid,field_data FROM biblio_field WHERE field_data = '$isbn'";
+				$new=mysql_query($sql) OR die (mysql_error());
+				$query=mysql_fetch_array($new);
+				$bibid_check=$query[0];
+				//nur anzeigen wenn secure_copy off (unchecked)
+				if($bibid_check!="" && ($secure_copy !="on")){  
+					//echo "<br>bibid zu isbn: ".$bibid_check;
+					$error1="<br>Diese ISBN existiert bereits:";
+					$link_to_isbn="<br><a href=\"../catalog/biblio_edit.php?bibid=$bibid_check\" target=\"_blank\">zeige Medium</a>";			
+				}
+				else{
+					$link_to_isbn="";
+				}
+			}
+		}
+		/*************************Erscheiungsjahr*************************************/	
+				
+		$muster='/^[0-2]{1}[0-9]{3}$/'; 
+		if($pb_year){
+			
+			if((preg_match($muster, $pb_year,$wert)==0) && ($secure_copy !="off"))
+			{
+				echo $pb_year;
+				$error18 = "<br>Keine g&uumlltige Jahresangabe (YYYY)";
+				$pb_year="";
+				
+			}	
+		}
+				
+			
+		/*************************Seitenanzahl/Spieldauer*************************************/
+			$muster='/^[0-9]{2}:[0-9]{2}:[0-9]{2}$/'; 
+		if($physics=="1"){
+			if((preg_match($muster,$ph_description ,$wert))==0)
+			{
+				$error16 = "<br>Keine g&uumlltige Zeitangabe (hh:mm:ss)";
+				$ph_description="";	
+			}
+		}	 
+		$muster='/^[0-9]{1,4}$/'; 
+		if($physics=="2"){
+			if((preg_match($muster,$ph_description ,$wert))==0)
+			{
+				$error16 = "<br>Keine g&uumlltige Seitenzahl ";
+				$ph_description="";	
+			}	 
+		}
+		
+	/****************************hyperlink/Internetseite***************************************/
+		$muster='/^www.*.*$/';
+		if($hyperlink !=""){
+			if((preg_match($muster,$hyperlink ,$wert))==0)
+			{
+				$error20 = "<br>Keine g&uumlltige Internetadresse (Bsp.: www.selfhtml.org)";
+				$hyperlink="";	
+			}	 
+		}
+	
+	
+	
+	   //************************************ Datenbank Neuer_Eintrag ********************************//
+	   
+	   
+	   /*************************TESTBEREICH OHNE GESAMTES FORMULAR*********************************/
+	  
+	   /*******************************************************************************************/
+	   
+	   
+	   /****************Schlagwörter  für Schlagwortliste suchen ********(onchange)**************************/
+	   /*   																								*/
+	   /*                                                                                                   */
+	   /*****************************************************************************************************/
+	   
+	   /* eine Suchwort-Liste (slogan-list) aus den daten der Datenbank erstellen und an Javascript übergeben Rehenfolge muss strikt eingehlaten werden*/                                                         
+	  $list_slogans=list_slogans();
+	  $lange=strlen($list_slogans); 
+	  $list=explode(";",$list_slogans);
+	   ?>
+	<script>
+		function get_list(){
+			 
+			return '<?php echo $list_slogans;?>';
+		}	
+	/*******************************************************************************************/
+	</script>
+	<?php
+	  /***********OPAC-FLG**********/
+			
+			
+	  if ($opac_flg=="on")
+				{ $opac_flg1="Y";$checked="checked=\"checked\"";
+			} 
+			else 
+				{$opac_flg1="N";$checked="";
+			} 
+			
+			//echo "<br>opac_flg1: ".$opac_flg1  ;
+			//echo "<br>".$checked  ;
+			
+	/****************Secure_copy_flag ********************************************************/		
+		if ($secure_copy=="on")
+				{ $secure_copy1="Y";$checked_secure_copy="checked=\"checked\"";
+			} 
+			else 
+				{$secure_copy1="N";$checked="";
+				
+			} 
+	/******************************************************************************************************/	
+		
+		
+	 /*************************************************************************************************************************************************************************/
+	 /*************************************************************************************************************************************************************************/
+	  /************************************************************************************************************************************************************************/
+	  
+	  if($secure_copy =="on"){ //Wenn Sechure_copy == on => weise leere Strings zu und generiere Mediennummer sechstellig angelehnt an opac_auto_generate funktion//
+		  $isbn=" ";
+		  $publisher=" ";
+		  $pb_year=" ";
+		  $public_lc=" ";
+		  $medium_nbr=" ";
+		  $opac_flg1="N";
+		  $checked="";
+		  $author=" ";
+		  
+		  
+		  $sql = mysql_query("SELECT MAX(barcode_nmbr) FROM biblio_copy WHERE barcode_nmbr Regexp '^[0-9]{6}$' ");  
+		  $query_result = mysql_fetch_array($sql);
+		  $barcode_nmbr = $query_result[0];
+		  $medium_nbr = $barcode_nmbr + 1;
+		  
+		/*echo "<br>material: ".$material;
+		echo "<brgenre> :".$genre;	  
+		echo "<br>location: ".$location;
+		echo "<br>material: ".$material;
+		echo "<br>autor:$author";
+		echo "<br>Signatur:$additional_sig";
+		echo "<br>fertigkeiten:$skills";
+		echo "<br>isbn:$isbn";
+		echo "<br>sprache:$language";
+		echo "<br>title:$title";
+		echo "<br>$language";
+		echo "<br>herausgerber:$publisher";
+		echo "<br>niveau:$niveau";
+		echo "<br>schlagwoerter:$slogan";
+		echo "<br>skills:$skills";
+		echo "<br>mediumnr:$medium_nbr";
+		echo "<br>Flag:$opac_flg1";
+		echo "<br>Genre:$genre";
+		echo "<br>Secure_copy: ".$secure_copy;
+		echo "<br>barcode_nmbr: ".$medium_nbr;*/
+		 
+	  }
+	 
+	  if(isset($_POST['eintragen'])
+									&& $isbn && $title && $down_title && $author && $publisher && $public_lc && $pb_year && $ph_description && $material && $genre && $location 
+									&& $additional_sig && $skills && $language && $niveau  && $medium_nbr && $opac_flg1 && $slogan){
+			$create = date('YmdHis', time());
+			$last_change = date('YmdHis', time());
+			$material1=mysql_fetch_array(mysql_query("SELECT description FROM material_type_dm WHERE code='$material'")) OR die (mysql_error()); 
+		
+		
+			echo "<brgenre> :".$genre;	  
+			echo "<br>location: ".$location;
+			echo "<br>material: ".$material;
+			echo "<br>regal:$regal";
+			echo "<br>autor:$author";
+			echo "<br>Signatur:$additional_sig";
+			echo "<br>fertigkeiten:$skills";
+			echo "<br>isbn:$isbn";
+			echo "<br>sprache:$language";
+			echo "<br>title:$title";
+			echo "<br>$language";
+			echo "<br>herausgerber:$publisher";
+			echo "<br>niveau:$niveau";
+			echo "<br>schlagwoerter:$slogan";
+			echo "<br>mediumnr:$medium_nbr";
+			echo "<br>Flag:$opac_flg1";
+			echo "<br>Genre:$genre";
+			
+			/*************************************************************************************************************/
+			/************************ insert into biblio, biblio_fields***************************************************/
+			
+			$sql=  "INSERT INTO biblio (last_change_userid,create_dt,last_change_dt,material_cd,collection_cd,author,call_nmbr1,call_nmbr2,title,topic1,topic2,topic3,topic5,opac_flg) 
+					VALUES (2,'$create','$last_change','$material',NULL,'$location','$additional_sig','$genre','$title','$author','$slogan','$language','$niveau','$opac_flg1')";
+            $new=mysql_query($sql) OR die(mysql_error());
+            
+            /********************* INSERT into biblio_copy  (Verlag,Dauer,ISBN, Erscheinungsort; Erscheinungsjahr, Seitenzahl:::::)***************************/
+            
+            $sql="SELECT bibid FROM biblio ORDER BY bibid DESC LIMIT 1"; //letzte soeben eingetragene bibid auslesen
+			$new=mysql_query($sql) OR die(mysql_error());
+			$bibid=mysql_fetch_array($new);
+			$bibid=$bibid[0];
+			//echo "<br>bibid :".$bibid;
+			
+			/*****************************************INSERT into biblio_copy_skills************************************/
+			
+			$sql=  "INSERT INTO biblio_skills (bibid,hearing_skill,speak_skill,write_skill,grammar_skill,read_skill) 
+																VALUES ('$bibid','$skills_hear','$skills_speak','$skills_write','$skills_grammar','$skills_read')";
+         $new=mysql_query($sql) OR die(mysql_error());
+			
+			/*******************************************************Insert isbn *****************************************************************************/
+			
+			$description_isbn="Internationale Standard Buch Nummer \(ISBN\)"; //tag, subfield_cd, repeatableflag für ISBN auslesen
+			$sql="SELECT tag,subfield_cd, repeatable_flg FROM usmarc_subfield_dm WHERE description='$description_isbn'";
+			$new=mysql_query($sql) OR die(mysql_error());
+			$query=mysql_fetch_array($new);
+			
+			$tag_isbn=$query[0];
+			$subfield_cd_isbn=$query[1];
+			$field_data_isbn=$isbn;
+			/*echo "<br>tag: ".$tag_isbn;   
+			echo "<br>subfield_cd: ".$subfield_cd_isbn;
+			echo "<br>ISBN : ".$field_data_isbn;   
+			echo "<br>description: ".$description_isbn;*/
+			
+				$sql="INSERT INTO biblio_field(bibid, tag, subfield_cd, field_data) VALUES ('$bibid', '$tag_isbn', '$subfield_cd_isbn','$field_data_isbn')";
+				$new=mysql_query($sql)OR die(mysql_error());
+			
+			
+            /************************************Untertitel*******************************************************************/
+			
+			$description_title="Titel"; //tag, subfield_cd für Title auslesen
+			$sql="SELECT tag,subfield_cd, repeatable_flg FROM usmarc_subfield_dm WHERE description='$description_title'";
+			$new=mysql_query($sql) OR die(mysql_error());
+			$query=mysql_fetch_array($new);
+			$subfield_cd_title=$query[1];
+			$tag_title=$query[0];
+			$field_data_title=$title;
+			/*echo "<br>tag_title: ".$tag_title;   
+			echo "<br>subfield_cd: ".$subfield_cd_title;     
+			echo "<br>description: ".$description_title;*/
+			
+			$sql="INSERT INTO biblio_field(bibid, tag, subfield_cd, field_data) VALUES ('$bibid', '$tag_title', '$subfield_cd_title','$field_data_title')";
+            $new=mysql_query($sql)OR die(mysql_error());
+			
+			$description_subtitle="Untertitel"; //tag, subfield_cd für Untertitle auslesen
+			$sql="SELECT tag,subfield_cd, repeatable_flg FROM usmarc_subfield_dm WHERE description='$description_subtitle'";
+			$new=mysql_query($sql) OR die(mysql_error());
+			$query=mysql_fetch_array($new);
+			$subfield_cd_subtitle='b';//$query[1]; // auskommentiert weil hier 247 b als untertiel deklariert wird alt ist aber 245 b
+			$tag_subtitle=245; //$query[0]+2; // auskommentiert weil hier 247 b als untertiel deklariert wird alt ist aber 245 b
+			$field_data_subtitle=$down_title;
+			
+			/*echo "<br>tag_subtitle: ".$tag_subtitle;   
+			echo "<br>subfield_cd_subtitle: ".$subfield_cd_subtitle;     
+			echo "<br>description_subtitle: ".$description_subtitle;
+			echo "<br>field_data_subtitle: ".$field_data_subtitle;*/
+			
+			/*************************************Erscheinungsort************************************************/
+			
+			$sql="INSERT INTO biblio_field(bibid, tag, subfield_cd, field_data) VALUES ('$bibid', '$tag_subtitle', '$subfield_cd_subtitle','$field_data_subtitle')";
+            $new=mysql_query($sql)OR die(mysql_error());
+			
+			$description_public_lc="Erscheinungsort, Vertriebsort usw."; //tag, subfield_cd für ORT auslesen
+			$sql="SELECT tag,subfield_cd, repeatable_flg FROM usmarc_subfield_dm WHERE description='$description_public_lc'";
+			$new=mysql_query($sql) OR die(mysql_error());
+			$query=mysql_fetch_array($new);
+			$subfield_cd_public_lc=$query[1];
+			$tag_public_lc=$query[0];
+			$field_data_public_lc=$public_lc;
+			
+			/*
+			echo "<br>tag_public_lc: ".$tag_public_lc;   
+			echo "<br>subfield_cd_public_lc: ".$subfield_cd_public_lc;     
+			echo "<br>description_public_lc: ".$description_public_lc;
+			echo "<br>field_data_public_lc: ".$field_data_public_lc;
+			*/
+			$sql="INSERT INTO biblio_field(bibid, tag, subfield_cd, field_data) VALUES ('$bibid', '$tag_public_lc', '$subfield_cd_public_lc','$field_data_public_lc')";
+            $new=mysql_query($sql)OR die(mysql_error());
+			
+			/*******************Verlag/Herrausgeber***********************************************************/
+			
+			$description="Name des Verlags, der Vertriebsstelle usw."; //tag, subfield_cd für VERLAG/Herrausgeber auslesen
+			$sql="SELECT tag,subfield_cd, repeatable_flg FROM usmarc_subfield_dm WHERE description='$description'";
+			$new=mysql_query($sql) OR die(mysql_error());
+			$query=mysql_fetch_array($new);
+			$subfield_cd=$query[1];
+			$tag=$query[0];
+			$field_data=$publisher;
+			/*
+			echo "<br>tag_publisher: ".$tag;   
+			echo "<br>subfield_cd_publisher: ".$subfield_cd;     
+			echo "<br>description_publisher: ".$description;
+			echo "<br>field_data_publisher: ".$field_data;
+			*/
+			
+			$sql="INSERT INTO biblio_field(bibid, tag, subfield_cd, field_data) VALUES ('$bibid', '$tag', '$subfield_cd','$field_data')";
+            $new=mysql_query($sql)OR die(mysql_error());
+			 	
+			
+			$description="Erscheinungsjahr, Vertriebsjahr usw."; //tag, subfield_cd für Erscheinungsjahr auslesen
+			$sql="SELECT tag,subfield_cd, repeatable_flg FROM usmarc_subfield_dm WHERE description='$description'";
+			$new=mysql_query($sql) OR die(mysql_error());
+			$query=mysql_fetch_array($new);
+			$subfield_cd=$query[1];
+			$tag=$query[0];
+			$field_data=$pb_year;
+			/*
+			echo "<br>tag_pb_year: ".$tag;   
+			echo "<br>subfield_cd_pb_year: ".$subfield_cd;     
+			echo "<br>description_pb_year: ".$description;
+			echo "<br>field_data_pb_year: ".$field_data;
+			*/
+			
+			$sql="INSERT INTO biblio_field(bibid, tag, subfield_cd, field_data) VALUES ('$bibid', '$tag', '$subfield_cd','$field_data')";
+            $new=mysql_query($sql)OR die(mysql_error());
+            
+			/*********************************auswahl zwischen spieldauer und Seitenanzahl*****************************************************/
+			
+			if($physics=='1'){
+				$description="Spieldauer"; //tag, subfield_cd für Spieldauer auslesen
+				$sql="SELECT tag,subfield_cd, repeatable_flg FROM usmarc_subfield_dm WHERE description='$description' AND repeatable_flg='N'";
+				$new=mysql_query($sql) OR die(mysql_error());
+				$query=mysql_fetch_array($new);
+				$subfield_cd=$query[1];
+				$tag=$query[0];
+				$field_data=$ph_description;
+				/*
+				echo "<br>spieldauer tag_ph_description: ".$tag;   
+				echo "<br>spieldauer subfield_cd_ph_description: ".$subfield_cd;     
+				echo "<br>spieldauer description_ph_description: ".$description;
+				echo "<br>spieldauer field_data_ph_description: ".$field_data;
+				*/
+				
+				$sql="INSERT INTO biblio_field(bibid, tag, subfield_cd, field_data) VALUES ('$bibid', '$tag', '$subfield_cd','$field_data')";
+				$new=mysql_query($sql)OR die(mysql_error());
+			}
+			else if ($physics=='2'){
+				$description="Seitenanzahl"; //tag, subfield_cd für Spieldauer auslesen
+				$sql="SELECT tag,subfield_cd, repeatable_flg FROM usmarc_subfield_dm WHERE description='$description'";
+				$new=mysql_query($sql) OR die(mysql_error());
+				$query=mysql_fetch_array($new);
+				$subfield_cd=$query[1];
+				$tag=$query[0];
+				$field_data=$ph_description;
+				
+				/*echo "<br>Seitenanzahl tagph_description: ".$tag;   
+				echo "<br>Seitenanzahl subfield_cdph_description: ".$subfield_cd;     
+				echo "<br>Seitenanzahl descriptionph_description: ".$description;
+				echo "<br>Seitenanzahl field_data_ph_description: ".$field_data;*/
+				
+				
+				$sql="INSERT INTO biblio_field(bibid, tag, subfield_cd, field_data) VALUES ('$bibid', '$tag', '$subfield_cd','$field_data')";
+				$new=mysql_query($sql)OR die(mysql_error());
+			}	
+            
+            /**********************************************Zusammenfassung***************************************/
+			if($extra){
+				$description= utf8_decode("Fußnote, Zusammenfassung etc."); //tag, subfield_cd für Zusammenfassung auslesen
+				$sql="SELECT tag,subfield_cd, repeatable_flg FROM usmarc_subfield_dm WHERE description='$description'";
+				$new=mysql_query($sql) OR die(mysql_error());
+				$query=mysql_fetch_array($new);
+				$subfield_cd=$query[1];
+				$tag=$query[0];
+				$field_data=$extra;
+				/*
+				echo "<br>tag_extra: ".$tag;   
+				echo "<br>subfield_cd_extra: ".$subfield_cd;     
+				echo "<br>description_xtra: ".$description;
+				echo "<br>field_data_extra: ".$field_data;
+				*/
+				
+				$sql="INSERT INTO biblio_field(bibid, tag, subfield_cd, field_data) VALUES ('$bibid', '$tag', '$subfield_cd','$field_data')";
+				$new=mysql_query($sql)OR die(mysql_error());
+			}
+				/*****************************************Ein Exemplar anlegen********************************************/
+				/*copy desc => rausghenommen weil als lokaler standort geführt und dieser wird nicht gebraucht weil eindeutig druch sprache und signatur gegeben*/
+			
+				$sql="INSERT into biblio_copy (bibid, create_dt,copy_desc, barcode_nmbr, status_cd, status_begin_dt,renewal_count) 
+					  VALUES ('$bibid','$create','','$medium_nbr','in','$create','0')";
+				$new=mysql_query($sql)OR die(mysql_error());
+				
+			
+			
+			 
+			 /******************************Link zur Mediendatei eintragen !! Achtung neuer Datenbankeintrage tag 130 subfield_cd u --> biblio_field*********************/
+			if($hyperlink!=""){
+				
+				$description= utf8_decode("Link zur Mediendatei"); //tag, subfield_cd für Mediendatei
+				$sql="SELECT tag,subfield_cd, repeatable_flg FROM usmarc_subfield_dm WHERE description='$description'";
+				$new=mysql_query($sql)OR die(mysql_error());
+				$query=mysql_fetch_array($new);
+				$tag=$query[0];
+				$subfield_cd=$query[1];
+				$field_data = $hyperlink;
+				  
+				/*echo "<br>tag_Link zur Mediendatei ($hyperlink): ".$tag;   
+				echo "<br>subfield_cd_extra: ".$subfield_cd;     
+				echo "<br>description_xtra: ".$description;
+				echo "<br>field_data_extra: ".$field_data;*/
+				
+				
+				 $sql="INSERT into biblio_field (bibid,tag,subfield_cd,field_data)
+						VALUES('$bibid','$tag','$subfield_cd','$field_data')";
+				 $new=mysql_query($sql)OR die(mysql_error());
+			}		
+					
+            /****************************************************************************************************************************************************************/
+			/****************************************************Bei erfolgreichem Datenbankeintrag alle Werte reset () *************************************************/
+			$attention="";
+			if($opac_flg1=="N"){
+				$attention="Achtung der Datensatz wird nicht im OPAC angezeigt!";
+			}
+			echo "<br><span class=\"ok\">Datensatz erfolgreich eingetragen</span>";
+			echo "<br><span class=\"ok\">".$attention."</span>";
+			$select="";
+			$select1="";
+			$select2="";
+			$select3="";
+			$select4="";
+			$select5="";
+			$select6="";
+			$select7="";
+			$author="";
+			$isbn="";
+			$title="";
+			$publisher="";	
+			$material="0";
+			$materiall1="";
+			$genre="0";
+			$genre1="";
+			$location="0";
+			$location1="";
+			$regal=""; /******************ist noch nicht in der Abfrage enthalten ********(Dennis)*****/
+			$additional_sig="";
+			$skills="0";
+			$skils1="";
+			$language="0";
+			$fromNiv="0";
+			$fromNiv1="";
+			$toNiv="0";
+			$toNiv1="";
+			$slogan="";
+			$medium_nbr="";
+			$opacflg="";
+			$down_title="";
+			$ph_description="";
+			$extra="";
+			$public_lc="";
+			$pb_year="";
+			$physics="0";
+			$description_ph="";
+			$auswahl="";
+			$auswahl1="";
+			$auswahl2="";
+			$auswahl3="";
+			$auswahl4="";
+			$auswahl5="";
+			$auswahl6="";
+			$auswahl7="";
+			$auswahl8="1";
+			$slogan0="";
+			$slogan1="";
+			$slogan2="";
+			$slogan3="";
+			$slogan4="";
+			$select0="selected";
+			$checked="";
+			$hyperlink="";
+			$checked_secure_copy="";
+			$error18="";
+			
+	}
+	
+    else{ echo "<br>kein Datenbankeintrag erfolgt,"; echo  "<br>bitte das Formular komplett ausf&uuml;llen!";}
+			  
+  
+     
+   ?>
+   <!-- /**********************************FORMULAR ANFANG***************************************************************************************/-->
+    <br>
+
+		<form id="form_catalog"  name="catalog" class="katalogisierung"  action="biblio_new.php" method="post" accept-charset="utf-8"><!-- Problem bei der isbn suche ....reihenfolge der zuweisungen der Variablen abchecken-->
+			<table>
+				<tr>
+					<td><p>ISBN:<span class="error"><?php echo $error1; if($bibid_check!=""){ echo $link_to_isbn ;}?></span><input type="text" name="isbn"  value="<?php echo $isbn; ?>"></input>
+					</td>
+				</tr>
+				<tr>
+					<td><input id="isbn_search" type="submit" name="search" value="Daten suchen"></input></p>
+					</td>
+				</tr>
+				<tr>
+					<td><p>Backup erstellen:<input type="checkbox" onchange="show_constraints()" name="secure_copy" value="on" <?php echo $checked_secure_copy?>></input></p>
+					</td>
+				</tr>
+				<tr>
+					<td><p>Titel:<span class="error"><?php echo $error2;?></span><input type="text" name="title"  value="<?php echo $title; ?>"></input></p>
+					</td>
+				</tr>
+				<tr>
+					<td><p>Untertitel:(optional)<span class="error"><?php echo $error15;?></span><input type="text" name="down_title"  value="<?php echo $down_title; ?>"></input></p>
+					</td>
+				</tr>
+				<tr>
+					<td><p>Autor:<span class="error"><?php echo $error3;?></span><input type="text" name="author"  value="<?php echo $author; ?>"></input></p>
+					</td>
+				</tr>
+				<tr>
+					<td><p>Herrausgeber/Verlag:<span class="error"><?php echo $error4;?></span><input type="text" name="publisher"  value="<?php echo $publisher; ?>"></input></p>
+					</td>
+				</tr>
+				<tr>
+					<td><p>Physische Beschreibung (Dauer,Seitenzahl):<span class="error"><?php echo $error16;?></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<?php echo db_physics_sel("physics",$physics);?>
+					</td>
+				</tr>
+				<tr>
+					<td><p><input type="text" name="ph_description" value="<?php echo $ph_description ?>"></input></p>
+					</td>
+				</tr>
+				<tr>
+					<td><p>Erscheinungsort:<span class="error"><?php echo $error17;?></span><input type="text" name="public_lc"value="<?php echo $public_lc ?>"></input></p>
+					</td>
+				</tr>
+				<tr>
+					<td><p>Erscheinungsjahr:<span class="error"><?php echo $error18;?></span><input type="text" name="pb_year"value="<?php echo $pb_year ?>"></input></p>
+					</td>
+				</tr>				
+				<tr>
+				  <td><p>Medienart:<span class="error"><?php echo $error5;?></span>
+					  <?php echo db_material_sel("material", $material);?>
+				  </p></td>
+				</tr>
+				 <tr>
+					<td><p>Systematik:<span class="error"><?php echo $error6;?></span>
+					 <?php echo listQuery($systematics,"genre",$genre) ?>
+					 </p></td>
+					 <td>
+						<!--<select id="systematik01" name="genre" onchange="listSignature(document.getElementById('systematik01').getElementsByTagName('option')[document.getElementById('systematik01').selectedIndex].value)">
+							<option value="0"<?php echo $select0 ?>>--bitte ausw&auml;hlen--</option>
+							<?php list_description("collection_dm")?>
+							<option value="19"<?php echo $select1 ?>><?php if($genre=19){echo $auswahl1;}?></option>
+						</select>-->
+					</td>
+				</tr>
+				<tr>
+				  <td><p>Standort:<span class="error"><?php echo $error7;?></span> 
+					     <?php echo db_location_sel("location", $location);?>
+				  </p></td>
+				</tr>
+				<!-- Es wird kein Regal benötigt, setzt sich aus Signatur und Sprache zusammen -->
+				<!--<tr>
+					<td><p>Regalstandort:<span class="error"><?php echo $error8;?></span><input type="text" name="regal"value="<?php echo $regal ?>"></input>
+					</p></td>
+				</tr>-->
+				<tr>
+					<td><p>Signatur:<span class="error"><?php echo $error9;?></span></p>
+					
+					<!-- ****************achtung id =" start_sig nicht verändern oder id in function listSignature() JS änder ******  -->
+					<span id="start_sig"></span><input type="text" name="additional_sig" value="<?php echo $additional_sig ?>">
+					</td>
+				</tr>
+				<!--<tr>
+				  <td><p>Fertigkeiten:<span class="error"><?php echo $error10;?></span>
+					  <?php echo db_skills_sel("skills", $skills);?>
+				  </p></td>
+				</tr>-->
+				<tr>
+				  <td><p>Fertigkeiten:<div class="error"><?php echo $error10;?></div>
+				 	  H&ouml;ren<input type="checkbox" name="skills_hear" value="1"<?php echo $checked_skills_hear;?>>
+				 	  Sprechen<input type="checkbox" name="skills_speak" value="2"<?php echo $checked_skills_speak;?>> 
+				 	  Schreiben<input type="checkbox" name="skills_write" value="3"<?php echo $checked_skills_write;?>>
+				 	  Grammatik<input type="checkbox" name="skills_grammar" value="4"<?php echo $checked_skills_grammar;?>>
+				 	  Lesen<input type="checkbox" name="skills_read" value="5"<?php echo $checked_skills_read;?>>
+				  </p></td>				
+				</tr>
+				<tr>
+					<td><p>Sprache:<span class="error"><?php echo $error11;?></span>
+					    <?php echo db_language_sel("language", $language);?>
+					</p></td>
+				</tr>
+				<tr>
+					<td><p>Sprachniveau:<span class="error"><?php echo $error12;?></span>
+					</td>
+				<tr>
+					<td><span>von</span>
+				</tr>
+				<tr>
+					<td><?php echo db_niveau_sel("fromNiv",$fromNiv);?>
+					</td>
+				</tr>
+				<tr>
+					<td><span>bis</span>
+					</td>
+				</tr>
+				<tr>
+					<td><?php echo db_niveau_sel("toNiv",$toNiv);?>
+					</p></td>
+				</tr>						
+				<tr>
+					<td>Zusammenfassung (optional):<span class="error"><?php echo $error19;?></span>
+					</td>
+				</tr>
+				<tr>
+					<td><textarea  class="textarea" rows="4" cols="40" name="extra"><?php echo $extra ?></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>Link zur Mediendatei (optional):<span class="error"><?php echo $error20;?></span>
+					</td>
+				</tr>
+				<tr>
+					<td><input type="text" name="hyperlink"  value="<?php echo $hyperlink; ?>"></input>
+					</td>
+				</tr>&
+				<tr>
+					<td>Schlagw&ouml;rter:<span class="error"><?php echo $error14;?></span>
+					</td>
+					<td>Anzahl:
+					</td>
+				</tr>
+				<tr>
+					<td><input type="text" onchange="hinzu(select_erstellen('Schlagwortliste0', 'slogans0','slogan0'))" 
+										   onkeyup="hinzu(select_erstellen('Schlagwortliste0', 'slogans0','slogan0'))" 
+										   id="slogan0" name="slogan0" value="<?php echo $slogan0 ?>">
+						</input>
+					</td>
+					<td>
+						<select id="anzahl_slogan" onchange="showslogan(document.getElementById('anzahl_slogan').getElementsByTagName('option')[this.value].text)"   class="niveau" name="anzahl">
+							<option value="0" >--bitte ausw&auml;hlen--</option>
+							<option value="1" >1</option>
+							<option value="2" >2</option>
+							<option value="3" >3</option>
+							<option value="4" >4</option>
+							<option value="5" >5</option>
+							<option value="6"<?php echo $select8;?>><?php echo $auswahl8;?></option><!-- select funltioniert aberauswahl 8 wird nicht  angezeigt wenn auswahl ==6 ?? -->
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div id="Schlagwortliste0"></div>
+					</td>
+				</tr>
+				<tr>
+					<td><p><input id="slogan1" onkeyup="hinzu(select_erstellen('Schlagwortliste1', 'slogans1','slogan1'))" 
+											   onchange="hinzu(select_erstellen('Schlagwortliste1', 'slogans1','slogan1'))" 
+											   type="hidden" name="slogan1" value="<?php echo $slogan1 ?>">
+							</input></p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div id="Schlagwortliste1"></div>
+					</td>
+				</tr>
+				<tr>
+					<td><p><input id="slogan2" onchange="hinzu(select_erstellen('Schlagwortliste2', 'slogans2','slogan2'))" 
+											   onkeyup="hinzu(select_erstellen('Schlagwortliste2', 'slogans2','slogan2'))" 
+											   type="hidden" name="slogan2" value="<?php echo $slogan2 ?>">
+						</input>
+					</p></td>
+				</tr>
+				<tr>
+					<td>
+						<div id="Schlagwortliste2"></div>
+					</td>
+				</tr>
+				<tr>
+					<td><p><input id="slogan3" onchange="hinzu(select_erstellen('Schlagwortliste3', 'slogans3','slogan3'))"  
+											   onkeyup="hinzu(select_erstellen('Schlagwortliste3', 'slogans3','slogan3'))"
+											   type="hidden" name="slogan3" value="<?php echo $slogan3 ?>">
+						</input>
+					</p></td>
+				</tr>
+				<tr>
+					<td>
+						<div id="Schlagwortliste3"></div>
+					</td>
+				</tr>
+				<tr>
+					<td><p><input id="slogan4" onchange="hinzu(select_erstellen('Schlagwortliste4', 'slogans4','slogan4'))" 
+											   onkeyup="hinzu(select_erstellen('Schlagwortliste4', 'slogans4','slogan4'))" 
+											   type="hidden" name="slogan4" value="<?php echo $slogan4 ?>">
+							</input>
+					</p></td>
+				</tr>
+				<tr>
+					<td>
+						<div id="Schlagwortliste4"></div>
+					</td>
+				</tr>
+				<tr>
+					<td><p>Mediennummer:<span class="error"><?php echo $error13;if($medium_nbr_check){ echo $link_to_medium ;}?></span><input type="text" name="medium_nbr" value="<?php echo $medium_nbr ?>">
+					</p></td>
+				</tr>
+				<tr>
+					<td><p>im Opac anzeigen:<input type="checkbox" name="opacflg" value="on" <?php echo $checked?>></input>
+					</p></td>
+				</tr>
+				<tr>
+					<td><input type="submit" name="eintragen"  value="eintragen" ></input>
+						<input type="submit"  name="cancel" value="abbrechen" ></input>
+					</td>
+				<!-- ****************************************************** Übergabe Felder für Java Script u. php zum anzeigen der Daten bei Fehleintrag**************************************-->
+				<tr>
+					<td><input id="auswahl8" type="hidden" name="auswahl8" value="<?php echo $auswahl8 ?>"></input><!--slogan-anzahl-->
+					</td>
+				</tr>
+				</table>
+			
+				
+		</form>
+		<!--/******************* bei erneutem laden die Anzahl der Slogans mit laden **************************************/-->
+ 		<script>
+			set_dropdown_selected();
+		</script>
+		<!--**************************************************************************************************************-->

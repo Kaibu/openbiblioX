@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>MitarbeiterSuche</title>
+<style type="text/css">
+	body{
+		font-size:24px;
+	}
+	h1{
+		font-size:36px;
+	}
+</style>
+<script type="text/javascript" src="../lib/prototype.js"></script>
+<script type="text/javascript">
+	
+	window.onload = function(){
+                document.getElementById("searchInput").onkeyup = searchEngine;
+		//Event.observe("searchInput", "keyup", searchEngine);
+	}
+	
+	function searchEngine(){
+		var pars = "searchInput=" + escape($F("searchInput"));
+		new Ajax.Updater("Liste", "search.php", {method:"get", parameters: pars});
+	}
+	
+	function aufruf(){
+		return false;
+	}
+	
+</script>
+</head>
+<body>
+<h1>MitarbeiterSuche</h1>
+<form method="get" onsubmit="return aufruf()"><div>
+<fieldset>
+        <legend>Suchanfrage</legend>
+        <label for="searchInput">Suche:</label>
+        <input type="text" id="searchInput" name="searchInput" /> 
+        <div id="Liste"></div>   
+</fieldset>
+</div></form>
+
+</body>
+</html>

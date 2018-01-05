@@ -1,0 +1,263 @@
+
+
+body 
+	{
+	margin:0px;
+	padding: 0px;
+	font-family: verdana, helvetica, arial;
+	font-size: 14px;
+	color: #104871;
+	}
+	#logo1 {
+	    position: absolute;
+	    left: 0;
+	    top: 0;
+	}
+	#logo2 {
+	    position: absolute;
+	    left: 0;
+	    top: 0;
+	}
+a:link{
+	color: #104871;
+	font-family: verdana, helvetica, arial;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+a:visited{
+	color: #104871;
+	font-family: verdana, helvetica, arial;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+a:active{
+	font-family: verdana, helvetica, arial;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+	
+a:hover{
+	
+	color: #104871;
+	font-family: verdana, helvetica, arial;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: underline;
+	}
+
+	
+/*
+
+a.nav
+	{
+	color:#104871;
+	font-family: verdana, helvetica, arial;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+
+/*
+.nav a:active 
+	{
+	color:#104871;
+	font-family: verdana, helvetica, arial;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+
+.nav a:visited
+	{
+	color:#104871;
+	font-family: verdana, helvetica, arial;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+
+.nav a:hover 
+	{
+	color:#ffffff;
+	font-family: verdana, helvetica, arial;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: underline;
+	}
+*/
+div.favnav {
+	display :inline;
+	padding: 10px
+	}
+
+/*
+a.link
+	{
+	color:#333333;
+	font-family: Monotype Corsiva, script, verdana, helvetica, arial;
+	font-size: 20px;
+	font-weight: lighter;
+	font-style: italic;
+	text-decoration: none;
+	margin: 0px 20px 20px 20px;
+	}
+
+a.link:active 
+	{
+	color:#333333;
+	font-family: Monotype Corsiva, script, verdana, helvetica, arial;
+	font-size: 20px;
+	font-weight: lighter;
+	font-style: italic;
+	text-decoration: none;
+	margin: 0px 20px 20px 20px;
+	}
+
+/*a.link:visited 
+	{
+	color: #104871;
+	font-family: Monotype Corsiva, script, verdana, helvetica, arial;
+	font-size: 20px;
+	font-weight: lighter;
+	font-style: italic;
+	text-decoration: none;
+	margin: 0px 20px 20px 20px;
+	}
+
+a.link:hover 
+	{
+	color:#666666;
+	font-family: Monotype Corsiva, script, verdana, helvetica, arial;
+	font-size: 20px;
+	font-style: italic;
+	font-weight: bold;
+	text-decoration: underline;
+	margin: 0px 20px 20px 20px;
+	}
+	*/
+	/*
+.header
+	{
+	font-family: verdana, helvetica, arial;
+	font-size: 30px;
+	color: #000066;
+	font-weight: normal;
+	text-decoration: underline;
+	}
+
+.text
+	{
+	font-family: verdana, helvetica, arial;
+	font-size: 12px;
+	color: #ffeebb;
+	font-weight: bold;
+	text-decoration: none;
+	}
+
+.text2
+	{
+	font-family: verdana, helvetica, arial;
+	font-size: 13px;
+	color: #000066;
+	font-weight: normal;
+	text-decoration: none;
+	}
+
+.text3
+	{
+	font-family: verdana, helvetica, arial;
+	font-size: 9px;
+	color: #000066;
+	font-weight: normal;
+	text-decoration: none;
+	}
+
+.titel_seite
+	{
+	font-family: verdana, helvetica, arial;
+	font-size: 14px;
+	color: #000066;
+	font-weight: bold;
+	text-decoration: underline;
+	}
+*/
+.error
+	{
+	font-family: verdana, helvetica, arial;
+	font-size: 16px;
+	/*text-decoration: blink;*/
+	color: #ff1111;
+	font-weight: bold;
+	}
+	
+h1 {
+	text-align: center;
+	font-family: 'Verdana';
+	font-size: 20px;
+	color: #104871;
+	font-weight:bold;}
+	
+h2{	
+	font-family: 'Verdana';
+	font-size: 18px;
+	font-weight:bold;
+	font-style: italic;
+	text-decoration: underline;
+	font-variant: small-caps;
+}
+h3{
+	font-family: 'Verdana';
+	font-size: 16px;
+	font-weight:bold;
+	color: yellow;
+}
+marquee{
+	font-size: 16px;
+	}
+
+
+#channellist td {
+			background-color:#CCCC99;
+			color : #104871;
+			padding: 5px 20px;
+			}
+#channellist {
+			background-color: grey;
+			border-style: outset;
+			
+			}
+
+
+form {
+	border-style: solid;
+	border-width: thin;
+	border-color: grey;
+	margin-top: 300px;
+	margin-left: 250px;
+	width:350px;
+	padding: 5px;
+	}
+input[type=text]{
+	width:300px;
+	display: block;
+	}
+select{
+	width:300px;
+	display: block;
+	}
+/*
+.cover{
+	font-weight: bold;
+	background-color: grey;
+	}
+input:focus, textarea:focus {
+    background-color: yellow;
+}
+form {
+	background-color: #B2CCFF;
+	border: 1px solid silver;
+	}
+*/

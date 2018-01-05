@@ -1,0 +1,840 @@
+/*********************Body***************************************/
+
+body {
+						font-family: verdana, helvetica, arial;
+						font-size: 14px;
+						color: #104871;
+						
+						}
+
+
+
+/**********************Table*****(abwechselnde farben mit class="alt1" bzw "alt2"*******************************/
+
+
+						table{
+							border-collapse:collapse;
+							border-style: ridge;
+						}
+						th {
+							font-size:16px;
+							border-style: solid;
+							border-left-width:1;
+							border-right-width:1;
+							border-top-width:1;
+							border-bottom-width:1;
+							border-bottom-color:#000000;
+							
+						}
+						tr {
+							
+							border-left-width:1;
+							border-right-width:1;
+						}
+						tr.alt1{
+							
+							border-style:outset;
+							border-left-color:#000000;
+							border-bottom-color:#000000;	
+						}
+						tr.alt2{
+							border-style:outset;
+							border-top-color:#000000;
+							border-bottom-color:#000000;
+							color:#000000;
+						}
+						td{
+							border-style:outset;
+							border-left-width:1px;
+							border-right-width:1px;
+							border-left-color:#000000;
+							border-right-color:#000000;
+							border-top-color:#000000;
+							border-bottom-color:#000000;
+							}
+
+
+
+
+
+
+
+
+
+
+
+/*********************************************************
+ *  Body Style
+ *********************************************************//*
+
+table{
+    border-color: grey;
+    border-style: solid;
+    border-width: thin;
+    margin-left: 250px;
+    margin-top: 300px;
+    padding: 5px;
+    width: 350px;
+}
+/*********************************************************
+ *  Font Styles
+ *********************************************************//*
+font.primary {
+  color: #000000;
+  font-size: 13px;
+  font-family: verdana,arial,helvetica;*
+}
+font.error {
+  color: #aa0000;
+  font-size: 13px;
+  font-family: verdana,arial,helvetica;
+  font-weight: bold;
+}/*
+h1 {
+  font-size: 16px;
+  font-family: verdana,arial,helvetica;
+  font-weight: normal;
+}
+
+/*********************************************************
+ *  Link Styles
+ *********************************************************
+a:link {
+  color: #000000;
+}
+a:visited {
+  color: #0000aa;
+}
+
+/*********************************************************
+*  Button Syles
+**********************************************************
+#main_table.input{
+	color:#7CFC00;
+}
+#nav_gap_main {
+	border: 2px
+	color: #7CFC00;
+}
+	/*#c5dde9*
+.navbutton {
+	outline-style: outset;
+}
+a.alt2: hover {
+		color : :#7CFC00;
+}
+
+ 
+/***********************************************************
+*Table Styles
+*********************************************************/
+
+
+
+/*body {
+	margin:0px;
+	padding: 0px;
+	font-family: verdana, helvetica, arial;
+	font-size: 14px;
+	color: #104871;
+	background-color:#104871;
+}/*
+#logo1 {
+	 position: absolute;
+	 left: 0;
+	 top: 0;
+  
+}
+#logo2 {
+	    position: absolute;
+	    left: 0;
+	    top: 0;
+	}
+a:link{
+	color: #104871;
+	font-family: verdana, helvetica, arial;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+a:visited{
+	color: #104871;
+	font-family: verdana, helvetica, arial;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+a:active{
+	font-family: verdana, helvetica, arial;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+	
+a:hover{
+	
+	color: #104871;
+	font-family: verdana, helvetica, arial;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: underline;
+	}
+
+	
+
+
+a.nav
+	{
+	color:#104871;
+	font-family: verdana, helvetica, arial;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+
+/*
+.nav a:active 
+	{
+	color:#104871;
+	font-family: verdana, helvetica, arial;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+
+.nav a:visited
+	{
+	color:#104871;
+	font-family: verdana, helvetica, arial;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+	}
+
+.nav a:hover 
+	{
+	color:#ffffff;
+	font-family: verdana, helvetica, arial;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: underline;
+	}
+
+a.link
+	{
+	color:#333333;
+	font-family: Monotype Corsiva, script, verdana, helvetica, arial;
+	font-size: 20px;
+	font-weight: lighter;
+	font-style: italic;
+	text-decoration: none;
+	margin: 0px 20px 20px 20px;
+	}
+
+a.link:active 
+	{
+	color:#333333;
+	font-family: Monotype Corsiva, script, verdana, helvetica, arial;
+	font-size: 20px;
+	font-weight: lighter;
+	font-style: italic;
+	text-decoration: none;
+	margin: 0px 20px 20px 20px;
+	}
+
+/*a.link:visited 
+	{
+	color: #104871;
+	font-family: Monotype Corsiva, script, verdana, helvetica, arial;
+	font-size: 20px;
+	font-weight: lighter;
+	font-style: italic;
+	text-decoration: none;
+	margin: 0px 20px 20px 20px;
+	}
+
+a.link:hover 
+	{
+	color:#666666;
+	font-family: Monotype Corsiva, script, verdana, helvetica, arial;
+	font-size: 20px;
+	font-style: italic;
+	font-weight: bold;
+	text-decoration: underline;
+	margin: 0px 20px 20px 20px;
+	}
+	
+	
+.header
+	{
+	font-family: verdana, helvetica, arial;
+	font-size: 30px;
+	color: #000066;
+	font-weight: normal;
+	text-decoration: underline;
+	}
+/*
+.text
+	{
+	font-family: verdana, helvetica, arial;
+	font-size: 12px;
+	color: #ffeebb;
+	font-weight: bold;
+	text-decoration: none;
+	}
+
+.text2
+	{
+	font-family: verdana, helvetica, arial;
+	font-size: 13px;
+	color: #000066;
+	font-weight: normal;
+	text-decoration: none;
+	}
+
+.text3
+	{
+	font-family: verdana, helvetica, arial;
+	font-size: 9px;
+	color: #000066;
+	font-weight: normal;
+	text-decoration: none;
+	}
+
+.titel_seite
+	{
+	font-family: verdana, helvetica, arial;
+	font-size: 14px;
+	color: #000066;
+	font-weight: bold;
+	text-decoration: underline;
+	}
+*
+.error
+	{
+	font-family: verdana, helvetica, arial;
+	font-size: 16px;
+	text-decoration: blink;
+	color: #ff1111;
+	font-weight: bold;
+	}
+/*	
+h1{
+	text-align: center;
+	font-family: 'Verdana';
+	font-size: 20px;
+	color: #104871;
+	font-weight:bold;
+  
+}
+	
+h2{	
+	font-family: 'Verdana';
+	font-size: 18px;
+	font-weight:bold;
+	font-style: italic;
+	text-decoration: underline;
+	font-variant: small-caps;
+}
+h3{
+	font-family: 'Verdana';
+	font-size: 16px;
+	font-weight:bold;
+	color: yellow;
+}
+marquee{
+	font-size: 16px;
+	}
+
+
+
+form{
+    background-color: green;
+    border-color: grey;
+    border-style: solid;
+    border-width: thin;
+    margin-left: 250px;
+    margin-top: 300px;
+    padding: 5px;
+    width: 350px;
+}
+input[type=text]{
+	width:300px;
+	display: block;
+	float: right;
+	}
+select{
+	width:300px;
+	display: block;
+	}
+/*
+.cover{
+	font-weight: bold;
+	background-color: grey;
+	}
+input:focus, textarea:focus {
+    background-color: yellow;
+}
+form {
+	background-color: #B2CCFF;
+	border: 1px solid silver;
+	}
+*/
+
+/* *****************************************
+ * Aus style.PHP
+ * 
+ **********************************************************************/
+
+
+/*********************************************************
+ *  Body Style
+ *********************************************************//*
+body {
+  background-color:#ffffff;/* <?php echo H(OBIB_PRIMARY_BG);?>;*/
+	
+
+/*********************************************************
+ *  Font Styles
+ *********************************************************
+/
+font.primary {
+  color: #104871;/*<?php echo H(OBIB_PRIMARY_FONT_COLOR);?>;*
+  font-size: 16;/*<?php echo H(OBIB_PRIMARY_FONT_SIZE);?>px;*
+  font-family: verdana, helvetica, arial;/*<?php echo H(OBIB_PRIMARY_FONT_FACE);?>;*
+}
+font.alt1 {
+  color: #ffffff;/*<?php echo H(OBIB_ALT1_FONT_COLOR);?>;*
+  font-size: 17px;/*<?php echo H(OBIB_ALT1_FONT_SIZE);?>px;*
+  font-family: verdana, helvetica, arial;/*<?php echo H(OBIB_ALT1_FONT_FACE);?>;*
+}
+font.alt1tab {
+  color: #ffffff;/*<?php echo H(OBIB_ALT1_FONT_COLOR);?>;*
+  font-size: 17px;/*<?php echo H(OBIB_ALT2_FONT_SIZE);?>px;*
+  font-family:verdana, helvetica, arial;/* <?php echo H(OBIB_ALT2_FONT_FACE);?>;
+<?php if (OBIB_ALT2_FONT_BOLD) { ?>*
+  font-weight: bold;
+/*<?php } else { ?>
+  font-weight: normal;
+<?php } ?>*
+}
+font.alt2 {
+  color: #000000;/*<?php echo H(OBIB_ALT2_FONT_COLOR);?>;*
+  font-size: 17px/*<?php echo H(OBIB_ALT2_FONT_SIZE);?>px;*
+ /font-family: /* <?php echo H(OBIB_ALT2_FONT_FACE);?>;
+<?php if (OBIB_ALT2_FONT_BOLD) { ?>*
+  font-weight: bold;
+/*<?php } else { ?>
+  font-weight: normal;
+<?php } ?>
+}/*
+font.error {
+  color: <?php echo H(OBIB_PRIMARY_ERROR_COLOR);?>;
+  font-size: <?php echo H(OBIB_PRIMARY_FONT_SIZE);?>px;
+  font-family: <?php echo H(OBIB_PRIMARY_FONT_FACE);?>;
+  font-weight: bold;
+}*
+font.small {
+  font-size: 12px;
+  font-family: verdana, helvetica, arial;/*<?php echo H(OBIB_PRIMARY_FONT_FACE);?>;*/
+}/*
+a.nav {
+  color:#ffffff;/* <?php echo H(OBIB_ALT1_FONT_COLOR);?>;
+  font-size: 10px;
+  font-family: verdana, helvetica, arial;/*<?php echo H(OBIB_ALT1_FONT_FACE);?>;
+  text-decoration: none;
+  background-color: #2d6582;/*<?php echo H(OBIB_ALT1_BG);?>;
+  border-style: solid;
+  border-color:#000000;/* <?php echo H(OBIB_BORDER_COLOR);?>;
+  border-width: 1;/*<?php echo H(OBIB_BORDER_WIDTH);?>*/
+}/*
+h1 {
+  font-size: 16px;
+  font-family: <?php echo H(OBIB_PRIMARY_FONT_FACE);?>;
+  font-weight: normal;
+}
+
+/*********************************************************
+ *  Link Styles
+ *********************************************************///*
+a:link {
+  color: #104871;/* <?php echo H(OBIB_PRIMARY_LINK_COLOR);?>; */ /*Linkfarben*//*
+}
+a:visited {
+  color:#104871;/* <?php echo H(OBIB_PRIMARY_LINK_COLOR);?>;*//*
+}
+a.primary:link {
+  color:#104871;/* <?php echo H(OBIB_PRIMARY_LINK_COLOR);?>;*//*
+}
+a.primary:visited {
+  color: #104871;/*<?php echo H(OBIB_PRIMARY_LINK_COLOR);?>;*//*
+}
+a.alt1:link { text-decoration: none;			/*links hover in menue linke seite*//*
+  color:#ffffff;/* <?php echo H(OBIB_ALT1_LINK_COLOR);?>;*//*
+	
+}
+a.alt1:visited {
+  color:#ffffff;/* <?php echo H(OBIB_ALT1_LINK_COLOR);?>*//*
+}
+a.alt1:hover{
+	
+	text-decoration:underline;
+}
+a.alt2:link {
+  color: #104781;/*<?php echo H(OBIB_ALT2_LINK_COLOR);?>;*//*
+}
+a.alt2:visited {
+  color: #104781;/*<?php echo H(OBIB_ALT2_LINK_COLOR);?>;*
+}
+.tab{							/*Reiter*
+	outline-style: outset;
+	outline-color: #F8F8FF;
+}
+.tab:{
+	background-color:#ffffff;
+}
+a.tab:link {
+  color: #104781;/*<?php echo H(OBIB_ALT2_LINK_COLOR);?>;
+  font-size: /*<?php echo H(OBIB_ALT2_FONT_SIZE);?> 17px;
+  font-family:verdana, helvetica, arial;/* <?php echo H(OBIB_ALT2_FONT_FACE);?>;
+<?php if (OBIB_ALT2_FONT_BOLD) { ?>
+  font-weight: bold;/*
+<?php } else { ?>
+  font-weight: normal;
+<?php } ?>
+  text-decoration: none
+}
+a.tab:visited {
+  color: #104781;/*<?php echo H(OBIB_ALT2_LINK_COLOR);?>;
+  font-size:verdana, helvetica, arial;/* <?php echo H(OBIB_ALT2_FONT_SIZE);?>px;
+  font-family: <?php echo H(OBIB_ALT2_FONT_FACE);?>;
+<?php if (OBIB_ALT2_FONT_BOLD) { ?>
+  font-weight: bold;
+/*<?php } else { ?>
+  font-weight: normal;
+<?php } ?>
+  text-decoration: none
+}
+a.tab:hover {text-decoration: underline}
+
+/*********************************************************
+ *  Table Styles
+ *********************************************************
+table.primary {
+ /* border-collapse: collapse
+}
+table.border {
+  border-style: solid;
+  border-color:grey;		/* <?php echo H(OBIB_BORDER_COLOR);?>;
+  border-width: 	1px;		/*<?php echo H(OBIB_BORDER_WIDTH);?>
+}
+th {
+  background-color:#c5dde9;	/* <?php echo H(OBIB_ALT2_BG);?>;
+  color: <?php echo H(OBIB_ALT2_FONT_COLOR);?>;*/
+/* font-size: 17;		/*<?php echo H(OBIB_ALT2_FONT_SIZE);?>px;*/
+ /* font-family: verdana, helvetica, arial;/*<?php echo H(OBIB_ALT2_FONT_FACE);?>;*/
+/*  padding: 2px/*<?php echo H(OBIB_PADDING);?>;*/
+/*  border-style: solid;
+/*<?php if (OBIB_ALT2_FONT_BOLD) { ?>*/
+/* font-weight: bold;
+/*<?php } else { ?>*/
+/*  font-weight: normal;
+/*<?php } ?>*/
+/*  border-color: #000000/*<?php echo H(OBIB_BORDER_COLOR);?>;
+  border-width: 1px;/* <?php echo H(OBIB_BORDER_WIDTH);?>;
+  height: 1
+}
+th.rpt {
+  background-color: #ffffff;/*<?php echo H(OBIB_PRIMARY_BG);?>;
+  color: #104871;/*<?php echo H(OBIB_PRIMARY_FONT_COLOR);?>;
+  font-size: 16px/*<?php echo (OBIB_PRIMARY_FONT_SIZE - 2);?>px;
+  font-family: verdana, helvetica, arial;/*Arial;
+  font-weight: bold;
+  padding: 2px;/*<?php echo H(OBIB_PADDING);?>;
+  border-style: solid;
+  border-color:#000000;/*<?php echo H(OBIB_BORDER_COLOR);?>;
+  border-width: 1;
+  text-align: left;
+  vertical-align: bottom;
+}
+td.primary {
+  background-color: #ffffff;/*<?php echo H(OBIB_PRIMARY_BG);?>;
+  color: #104871;/*<?php echo H(OBIB_PRIMARY_FONT_COLOR);?>;
+  font-size: 16px;/*<?php echo H(OBIB_PRIMARY_FONT_SIZE);?>px;
+  font-family: verdana, helvetica, arial;/*<?php echo H(OBIB_PRIMARY_FONT_FACE);?>;
+  padding:2/* <?php echo H(OBIB_PADDING);?>;
+  border-style: solid;
+  border-color: #000000;/*<?php echo H(OBIB_BORDER_COLOR);?>;
+  border-width: 1;/*<?php echo H(OBIB_BORDER_WIDTH);?>
+}
+td.borderless {
+  background-color: #ffffff;/*<?php echo H(OBIB_PRIMARY_BG);?>;
+  color: #104871;/*<?php echo H(OBIB_PRIMARY_FONT_COLOR);?>;
+  font-size: 16px;/*<?php echo H(OBIB_PRIMARY_FONT_SIZE);?>px;
+  font-family:  verdana, helvetica, arial;/*<?php echo H(OBIB_PRIMARY_FONT_FACE);?>;
+  padding: 2;/*<?php echo H(OBIB_PADDING);?>;
+}
+td.rpt {
+  background-color: #ffffff;/*<?php echo H(OBIB_PRIMARY_BG);?>;
+  color: #104871;/*<?php echo H(OBIB_PRIMARY_FONT_COLOR);?>;
+  font-size: 16px;/*<?php echo (OBIB_PRIMARY_FONT_SIZE - 2);?>px;
+  font-family:verdana, helvetica, arial;/*Arial;
+  padding:2;/* <?php echo H(OBIB_PADDING);?>;
+  border-top-style: none;
+  border-bottom-style: none;
+  border-left-style: solid;
+  border-left-color:  #000000;/*<?php echo H(OBIB_BORDER_COLOR);?>;
+  border-left-width: 1;
+  border-right-style: solid;
+  border-right-color:  #000000;/*<?php echo H(OBIB_BORDER_COLOR);?>;
+  border-right-width: 1;
+  text-align: left;
+  vertical-align: top;
+}
+td.primaryNoWrap {
+  background-color:#ffffff;/* <?php echo H(OBIB_PRIMARY_BG);?>;
+  color: #104871;/*<?php echo H(OBIB_PRIMARY_FONT_COLOR);?>;
+  font-size:16px;/* <?php echo H(OBIB_PRIMARY_FONT_SIZE);?>px;
+  
+  font-family: verdana, helvetica, arial;/*<?php echo H(OBIB_PRIMARY_FONT_FACE);?>;
+  padding: 2;/*<?php echo H(OBIB_PADDING);?>;
+  border-style: solid;
+  border-color: #000000<?php echo H(OBIB_BORDER_COLOR);?>;
+  border-width: 1;/*<?php echo H(OBIB_BORDER_WIDTH);?>;
+  white-space: nowrap;
+}
+
+td.title {
+  background-color: #ffffff;/*<?php echo H(OBIB_TITLE_BG);?>; color: #104871/*<?php echo H(OBIB_TITLE_FONT_COLOR);?>;
+  font-size:26px;/*<?php echo H(OBIB_TITLE_FONT_SIZE);?>px;
+  font-family: verdana, helvetica, arial;/*<?php echo H(OBIB_TITLE_FONT_FACE);?>;
+  padding: 2;/*<?php echo H(OBIB_PADDING);?>;
+<?php if (OBIB_TITLE_FONT_BOLD) { ?>
+  font-weight: bold;
+/*<?php } else { ?>
+  font-weight: normal;
+<?php } ?>
+  border-color:#000000;/* <?php echo H(OBIB_BORDER_COLOR);?>;
+  border-width: 1;/*<?php echo H(OBIB_BORDER_WIDTH);?>;
+  text-align: center;/*<?php echo H(OBIB_TITLE_ALIGN);;?>
+}
+td.alt1 {
+  background-color:#2d6582/*<?php echo H(OBIB_ALT1_BG);?>;
+  color: #ffffff;/* <?php echo H(OBIB_ALT1_FONT_COLOR);?>;
+  font-size: 17px;/*<?php echo H(OBIB_ALT1_FONT_SIZE);?>px;
+  font-family: verdana, helvetica, arial;/*<?php echo H(OBIB_ALT1_FONT_FACE);?>;
+  padding: 2;/*<?php echo H(OBIB_PADDING);?>;
+  border-style: solid;
+  border-color: #000000;/*<?php echo H(OBIB_BORDER_COLOR);?>;
+  border-width: 1px/*<?php echo H(OBIB_BORDER_WIDTH);?>
+}
+td.tab1 {
+  background-color: #2d6582;/*<?php echo H(OBIB_ALT1_BG);?>;
+  color: #ffffff;/*<?php echo H(OBIB_ALT1_FONT_COLOR);?>;
+  font-size: 17px;/*<?php echo H(OBIB_ALT1_FONT_SIZE);?>px;
+  font-family: verdana, helvetica, arial;/*<?php echo H(OBIB_ALT2_FONT_FACE);?>;
+<?php if (OBIB_ALT2_FONT_BOLD) { ?>
+  font-weight: bold;
+/*<?php } else { ?>
+  font-weight: normal;
+<?php } ?>
+  padding: 2;/*<?php echo H(OBIB_PADDING);?>;
+}
+td.tab2 {
+  background-color: #c5dde9;/*<?php echo H(OBIB_ALT2_BG);?>;
+  color:#000000;/* <?php echo H(OBIB_ALT2_FONT_COLOR);?>;
+  font-size:17px;/* <?php echo H(OBIB_ALT2_FONT_SIZE);?>px;
+  font-family: verdana, helvetica, arial;/*<?php echo H(OBIB_ALT2_FONT_FACE);?>;
+<?php if (OBIB_ALT2_FONT_BOLD) { ?>
+  font-weight: bold;
+/*<?php } else { ?>
+  font-weight: normal;
+<?php } ?>
+  padding: 2;/*<?php echo H(OBIB_PADDING);?>;
+}
+td.noborder {
+  background-color: #ffffff;/*<?php echo H(OBIB_PRIMARY_BG);?>;
+  color: #104871;/*<?php echo H(OBIB_PRIMARY_FONT_COLOR);?>;
+  font-size:16px;/* <?php echo H(OBIB_PRIMARY_FONT_SIZE);?>px;
+  font-family:verdana, helvetica, arial;/* <?php echo H(OBIB_PRIMARY_FONT_FACE);?>;
+  padding: 2px;/*<?php echo H(OBIB_PADDING);?>;
+}
+
+table.form { margin-bottom: 1em }
+table.form th.title {
+  background-color:#ffffff;/* <?php echo H(OBIB_PRIMARY_BG);?>;
+  color: #104871;/*<?php echo H(OBIB_PRIMARY_FONT_COLOR);?>;
+  text-align: left;
+  font-weight: bold;
+  font-size: 18px;
+  border: none;
+  border-bottom: solid /*<?php echo H(OBIB_ALT2_BG);?>*/ 2px;
+}
+table.form  {
+  text-align: right;
+  vertical-align: top;
+  background-color:#ffffff;/* <?php echo H(OBIB_PRIMARY_BG);?>;
+  color:#104871;/* <?php echo H(OBIB_PRIMARY_FONT_COLOR);?>;*/
+  /*border: none;
+}
+table.form .error { font-weight: bold; color: red }
+table.form .error { font-weight: bold; color: red }
+
+/*********************************************************
+ *  Form Styles
+ *********************************************************/
+ 
+
+ /*
+input.button {
+  background-color: <?php echo H(OBIB_ALT1_BG);?>;
+  border-color: <?php echo H(OBIB_ALT1_BG);?>;
+  border-left-color: <?php echo H(OBIB_ALT1_BG);?>;
+  border-top-color: <?php echo H(OBIB_ALT1_BG);?>;
+  border-bottom-color: <?php echo H(OBIB_ALT1_BG);?>;
+  border-right-color: <?php echo H(OBIB_ALT1_BG);?>;
+  padding: <?php echo H(OBIB_PADDING);?>;
+  font-family: <?php echo H(OBIB_PRIMARY_FONT_FACE);?>;
+  color: <?php echo H(OBIB_ALT1_FONT_COLOR);?>;
+}
+input.navbutton {					/*bezeichnet den Logout button in der Nabvar*//*
+  background-color: <?php echo H(OBIB_ALT2_BG);?>;
+  border-color: <?php echo H(OBIB_ALT2_BG);?>;
+  border-left-color: <?php echo H(OBIB_ALT2_BG);?>;
+  border-top-color: <?php echo H(OBIB_ALT2_BG);?>;
+  border-bottom-color: <?php echo H(OBIB_ALT2_BG);?>;
+  border-right-color: <?php echo H(OBIB_ALT2_BG);?>;
+  padding: <?php echo H(OBIB_PADDING);?>;
+  font-family: <?php echo H(OBIB_PRIMARY_FONT_FACE);?>;
+  color: <?php echo H(OBIB_ALT2_FONT_COLOR);?>;
+	
+}
+input {
+  background-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-left-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-top-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-bottom-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-right-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  padding: 0px;
+  scrollbar-base-color: <?php echo H(OBIB_ALT1_BG);?>;
+  font-family: <?php echo H(OBIB_PRIMARY_FONT_FACE);?>;
+  color: <?php echo H(OBIB_PRIMARY_FONT_COLOR);?>;
+}
+textarea {
+  background-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-left-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-top-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-bottom-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-right-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  padding: 0px;
+  scrollbar-base-color: <?php echo H(OBIB_ALT1_BG);?>;
+  font-family: <?php echo H(OBIB_PRIMARY_FONT_FACE);?>;
+  color: <?php echo H(OBIB_PRIMARY_FONT_COLOR);?>;
+  font-size: <?php echo H(OBIB_PRIMARY_FONT_SIZE);?>px;
+}/*
+select {
+  background-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-left-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-top-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-bottom-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  border-right-color: <?php echo H(OBIB_PRIMARY_BG);?>;
+  padding: 0px;
+  scrollbar-base-color: <?php echo H(OBIB_ALT1_BG);?>;
+  font-family: <?php echo H(OBIB_PRIMARY_FONT_FACE);?>;
+  color: <?php echo H(OBIB_PRIMARY_FONT_COLOR);?>;
+}
+
+ul.nav_main { list-style-type: none; padding-left: 0; margin-left: 0; }
+li.nav_selected:before { white-space: pre-wrap; content: "\bb  " }
+ul.nav_main li.nav_selected { font-weight: bold }
+ul.nav_sub li.nav_selected { font-weight: bold }
+ul.nav_main li { font-weight: normal }
+ul.nav_sub li { font-weight: normal }
+
+li.report_category { margin-bottom: 1em }
+
+table.results {
+  width: 100%;
+  border-collapse: collapse;
+}
+table.resultshead {
+  width: 100%;
+  border-collapse: separate;
+  border-top: solid #c5dde9; /*<?php echo OBIB_ALT2_BG;?>*/ 3px;
+  /*border-bottom: solid #c5dde9 /*<?php echo OBIB_ALT2_BG;?>*/ 3px;
+  /*clear: both;
+}
+table.resultshead th {
+  text-align: left;
+  color: #104871;/*<?php echo OBIB_PRIMARY_FONT_COLOR;?>;
+  border: none;
+  background: #ffffff;/*<?php echo OBIB_PRIMARY_BG;?>;
+  font-size: 16px;
+  font-weight: bold;
+  vertical-align: middle;
+  padding: 2px;
+}
+table.resultshead td {
+  text-align: right;
+}
+table.results td.primary { border-top: none; }
+/*
+table.buttons {
+  margin: 0 0 0 auto;
+  padding: 0;
+  border-collapse: separate;
+  background: white;
+}
+table.buttons td {
+  background-color: <?php echo OBIB_ALT2_BG;?>;
+  /* Hide from IE5/Mac \*//*
+  border-color: <?php echo OBIB_ALT2_BG;?>;
+  border-style: outset;
+  border-width: 1px;
+  /* End hiding *//*
+  padding: 4px;
+  font-weight: bold;
+  font-size: 12px;
+  text-align: center;
+  vertical-align: middle;
+}
+table.buttons input {
+  border: none;
+  color: <?php echo OBIB_ALT2_FONT_COLOR;?>;
+  background: <?php echo OBIB_ALT2_BG;?>;
+  padding: 0;
+  margin: 0;
+  font-weight: bold;
+  white-space: normal;
+}*
+table.buttons input hover { text-decoration: underline; }  
+table.buttons a {
+  color: #000000;/*<?php echo OBIB_ALT2_FONT_COLOR;?>;*
+  text-decoration: none;
+}
+table.buttons a:hover { text-decoration: underline; }
+table.buttons a:visited { color: #000000; /*<?php echo OBIB_ALT2_FONT_COLOR;?>; *
+}
+
+div.errorbox {
+  border-style: solid;
+  border-color: #000000;/*<?php echo H(OBIB_BORDER_COLOR);?>;*
+  border-width:1px;/* <?php echo H(OBIB_BORDER_WIDTH);?>;*
+  max-width: 500px;
+  margin: 10px;
+  padding: 5px;
+  background-color: #2d6582; /*<?php echo H(OBIB_ALT1_BG);?>;*
+}
+div.errorbox .errorhdr { font-size: large; font-weight: bold }
+div.errorbox ul { margin-left: 0; padding-left: 1.5em }
+div.errorbox li { margin-left: 0 }
+
+
+
+
+
+
+

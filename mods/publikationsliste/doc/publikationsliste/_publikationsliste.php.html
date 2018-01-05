@@ -1,0 +1,306 @@
+<html>
+<head>
+<title>Docs for page publikationsliste.php</title>
+<link rel="stylesheet" type="text/css" href="../media/style.css">
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+    <td class="header_top">publikationsliste</td>
+  </tr>
+  <tr><td class="header_line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td class="header_menu">
+        
+                                    
+                              		  [ <a href="../classtrees_publikationsliste.html" class="menu">class tree: publikationsliste</a> ]
+		  [ <a href="../elementindex_publikationsliste.html" class="menu">index: publikationsliste</a> ]
+		  	    [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td class="header_line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="200" class="menu">
+      <b>Packages:</b><br />
+              <a href="../li_publikationsliste.html">publikationsliste</a><br />
+            <br /><br />
+                        <b>Files:</b><br />
+      	  <div class="package">
+			<a href="../publikationsliste/_beispiele---beispiel1.php.html">		beispiel1.php
+		</a><br>
+			<a href="../publikationsliste/_beispiele---beispiel2.php.html">		beispiel2.php
+		</a><br>
+			<a href="../publikationsliste/_beispiele---beispiel3.php.html">		beispiel3.php
+		</a><br>
+			<a href="../publikationsliste/_beispiele---beispiel4.php.html">		beispiel4.php
+		</a><br>
+			<a href="../publikationsliste/_beispiele---beispiel5.php.html">		beispiel5.php
+		</a><br>
+			<a href="../publikationsliste/_beispiele---beispiel6.php.html">		beispiel6.php
+		</a><br>
+			<a href="../publikationsliste/_publikationsliste.php.html">		publikationsliste.php
+		</a><br>
+	  </div><br />
+      
+      
+                </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Procedural File: publikationsliste.php</h1>
+Source Location: /publikationsliste.php<br /><br />
+
+<br>
+<br>
+
+
+<h2>Page Details:</h2>
+PHP-Bibliothek zum Erstellen von Publikationslisten<br /><br /><p>Publikationslisten werden in zwei Schritten erstellt: Zunaechst wird ueber eine Abfrage an den Katalog (an PSI oder PERLIS) eine Liste von PPNs zusammengestellt. Anschliessend werden die dazugehoerigen Metadaten ueber die unAPI-Schnittstelle des GBV hinzugeholt. Anwendungsbeispiele finden Sie im Unterordner &quot;/beispiele&quot;. Beachten Sie auch die Dokumentation unter http://www.gbv.de/wikis/cls/Publikationslisten. Dieses Skript soll als Vorlage fuer eigene Anwendungen dienen und wartet darauf, eingesetzt und erweitert zu werden.</p><p>Die Bibliothek ist prozedural programmiert. Nach Einbindung stehen die Funktionen <ul><li>get_ppns_from_psi() fuer die Suche in einem PSI-System,</li><li>get_ppns_from_collectionws() fuer die Abfrage der PERLIS-Kollektionen ueber den PERLIS-Webservice und</li><li>get_records_via_unapi() fuer die Abfrage der Metadaten</li></ul> fuer die externe Programmierung zur Verfuegung. Alle weiteren Einstellungen erfolgen ueber das Konfigurationsarray $publistconf. Deren Standardeinstellungen werden bei Einbindung der Bibliothek gesetzt, sofern diese nicht vorher extern vom Programmierer definiert wurden. Alle Programmmeldungen und Fehler koennen in einer externen Datei mitgeloggt werden.</p><p>Caching: Damit der Katalog nicht bei jeder Anzeige der Publikationsliste neu abgefragt werden muss, kann die gesamte Ausgabe - inklusive der extern hinzugefuegten Programmierung - gecacht werden. Da die gesamte Ausgabe gecacht wird, vertraegt sich dieses Verfahren nicht mit automatisch generierten Suchanfragen. Das Caching ist gedacht um den Katalog von wiederkehrenden Anfrgen zu entlasten, die mit hoher Wahrscheinlichkeit zum gleichen Ergebnis fuehren. Wenn Sie Ihre Anfrage dynamisch veraendern und dennoch cachen moechten, muessen Sie Ihre Ausgabe in verschiedene Cache-Dateien speichern. Dies erreichen Sie, indem Sie dem Skript einen dynamisch generierten Dateinamen als Cache-Datei uebergeben.  Damit der Cache-Mechanismus funktioniert, darf das eigene Skript keine der Output Control Funktionen (flush(), ob_*()) verwenden. Zu Beachten ist auch, dass im Debugging-Modus die Logging-Meldungen ebenfalls gecacht werden, was unter Umstaenden zu Verwirrung fuehren kann ;-)  Nach Ablauf des Caching-Intervals wird der Cache bei erneutem Aufruf des Skriptes automatisch neu befuellt.</p><p>Die Konfigurationsparameter im Ueberblick: <ul><li>$publistconf[unapiformat] : Metadatenformat, das von der unAPI-Schnittstelle zurueckgeliefert werden soll. Name muss den unter http://unapi.gbv.de verfuegbaren Formaten entsprechen. Angabe erforderlich, falls bei Aufruf der Funktion get_records_via_unapi() kein Format uebergeben wird.</li><li>$publistconf[recordlimit] : Anzahl maximal zu liefernder Treffer bei PSI-Abfrage. Voreingestellt ist 100.</li><li>$publistconf[debug] : Schaltet Debugging-Modus ein ( entpsricht 1) oder aus (entspricht 0). Voreingestellt ist 0.</li><li>$publistconf[logfile] : Veranlasst Logging in diese Datei. Bleibt leer, falls kein Logging erwuenscht.</li><li>$publistconf[loglevel] : Legt fest wie detailliert geloggt werden soll. Vgl. die Loglevel der Funktion log_msg. Standard ist 1.</li><li>$publistconf[cachefile] : Veranlasst Caching des Ergebnisseite in diese Datei. Bleibt leer, falls kein Caching erwuenscht.</li><li>$publistconf[interval] : Legt fest, wann der Cache geleert werden soll. Angabe in Sekunden. Voreinstellung ist 60*60*24 = taegliche Aktualisierung.</li><li>$publistconf[purge] : Erzwingt Ignorieren des Caches - auch wenn Cachefile angegeben und Interval noch nicht abgelaufen. Variable kann extern gesetzt oder per GET oder POST uebergeben werden. Voreingestellt wird die Variable $_REQUEST['purge'] ausgelesen.</li></ul>  Verwendung dieser PHP-Bibliothek <ol><li>Schritt: Konfigurationsparameter setzen, z.B. in der Form &quot;$publistcon[interval] = 60;&quot;</li><li>Schritt: PHP-Bibliothek einbinden ueber den Befehl &quot;require 'Publikationsliste.php';&quot;</li><li>Schritt: PPNs ermitteln, z.B. 20 Titel von Guenter Grass aus dem GVK in der Form &quot;$ppns = get_ppns_from_psi(&quot;http://gso.gbv.de/DB=2.1/&quot;, &quot;1004&quot;, &quot;grass, günter&quot;, 20);&quot;</li><li>Schritt: Datensaetze holen, z.B. durch &quot;$records = get_records_via_unapi(&quot;http://unapi.gbv.de/&quot;, $ppns, &quot;isbd&quot;, &quot;gvk:ppn:&quot;);&quot;</li><li>Schritt: Titel ausgeben, z.B. durch eine Schleife &quot;foreach ($records as $record) { print htmlspecialchars($record); }&quot;</li></ol> Viel Erfolg!</p><br /><br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>author:</b>&nbsp;&nbsp;</td><td>Christian Knoop &lt;<a href="mailto:christian.knoop@gmx.net">christian.knoop@gmx.net</a>&gt;</td>
+  </tr>
+  <tr>
+    <td><b>author:</b>&nbsp;&nbsp;</td><td>Jakob Voss &lt;<a href="mailto:jakob.voss@gbv.de">jakob.voss@gbv.de</a>&gt;</td>
+  </tr>
+  <tr>
+    <td><b>link:</b>&nbsp;&nbsp;</td><td><a href="http://unapi.gbv.de/about">http://unapi.gbv.de/about</a></td>
+  </tr>
+  <tr>
+    <td><b>link:</b>&nbsp;&nbsp;</td><td><a href="http://ws.gbv.de/publikationsliste">http://ws.gbv.de/publikationsliste</a></td>
+  </tr>
+  <tr>
+    <td><b>link:</b>&nbsp;&nbsp;</td><td><a href="http://www.gbv.de/wikis/cls/Publikationslisten">http://www.gbv.de/wikis/cls/Publikationslisten</a></td>
+  </tr>
+</table>
+</div>
+<br /><br />
+<br /><br />
+<br /><br />
+<br />
+  <hr />
+	<a name="functioncache_and_flush_buffer"></a>
+	<h3>cache_and_flush_buffer <span class="smalllinenumber">[line 293]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void cache_and_flush_buffer(
+string $cachefile)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		Cache lesen, falls aktueller Cache vorhanden<br /><br /><p>Die Funktion zum Fuellen des Caches wird vom Server automatisch bei Skript-Abschluss aufgerufen (Fkt. register_shutdown_function), sofern eine Cache-Datei genannt wird. Daher bietet es sich an, jede Listendarstellung mit Zeitstempel zu versehen.</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$cachefile</b>&nbsp;&nbsp;</td>
+        <td>Datei, in die gecacht werden soll</td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functioncreate_psi_link"></a>
+	<h3>create_psi_link <span class="smalllinenumber">[line 106]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void create_psi_link(
+string $psibase, int $ikt, string $search, [string $sort = &amp;quot;&amp;quot;])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		Liefert einen Suchlink auf ein PSI-System<br /><br /><p>Dieser Link fuehrt zum gleichen Ergebnis wie die mit der Funktion get_ppns_from_psi ermittelten Treffer.</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$psibase</b>&nbsp;&nbsp;</td>
+        <td>Basis-URL, z.B. &quot;http://gso.gbv.de/DB=2.1/&quot;</td>
+      </tr>
+		      <tr>
+        <td class="type">int&nbsp;&nbsp;</td>
+        <td><b>$ikt</b>&nbsp;&nbsp;</td>
+        <td>Suchschluessel. Wo soll gesucht werden, z.B. in &quot;1004&quot; fuer Suche nach Personenname</td>
+      </tr>
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$search</b>&nbsp;&nbsp;</td>
+        <td>Suchanfrage, z.B. &quot;von Foerster, Heinz&quot;</td>
+      </tr>
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$sort</b>&nbsp;&nbsp;</td>
+        <td>Sortierung, z.B. &quot;LST_a&quot; fuer die Sortierung nach Autor im GVK</td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functionget_ppns_from_collectionws"></a>
+	<h3>get_ppns_from_collectionws <span class="smalllinenumber">[line 207]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void get_ppns_from_collectionws(
+string $username, string $password, string $dbsid, int $cid)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		Liest eine PERLIS-Sammlung aus<br /><br /><p>Liefert ein Array mit PPNs. Derzeit hat jeder PERLIS-Benutzer auf alle Sammlungen lesenden Zugriff - irgend ein Benutzeraccount genuegt daher.</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$username</b>&nbsp;&nbsp;</td>
+        <td>Benutzername</td>
+      </tr>
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$password</b>&nbsp;&nbsp;</td>
+        <td>Passwort</td>
+      </tr>
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$dbsid</b>&nbsp;&nbsp;</td>
+        <td>Datenbank-Id, fuer GBV-PERLIS derzeit &quot;2.101&quot;</td>
+      </tr>
+		      <tr>
+        <td class="type">int&nbsp;&nbsp;</td>
+        <td><b>$cid</b>&nbsp;&nbsp;</td>
+        <td>Sammlungs-Id</td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functionget_ppns_from_psi"></a>
+	<h3>get_ppns_from_psi <span class="smalllinenumber">[line 133]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void get_ppns_from_psi(
+string $psibase, int $ikt, string $search, [int $limit = &amp;quot;&amp;quot;], [string $sort = &amp;quot;&amp;quot;])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		Schickt Suche an PSI-System und liefert Array mit PPNs zurueck<br /><br /><p>Schickt Suchanfrage an ein PSI-System. Benutzt dabei &quot;XML-Schnittstelle&quot; und liefert eine Liste von PPNs in Form eines Array zurueck. Die Treffermenge kann begrenzt werden. Durch einen Parameter, der an das liefernde PSI-System uebergeben wird, kann das Ergebnis auch sortiert werden. Die Sortiermoeglichkeiten haengen allerdings vom Liefersystem ab. PSI-Systeme erlauben i.d.R. eine Sortierung nach <ul><li>YOP = Erscheinungsjahr</li><li>RLV = Relevanz</li><li>LST_a = Autor und</li><li>LST_t = Titel.</li></ul> Voreingestellt wird kein Sortierparameter uebergeben, das Skript liefert dann die Treffer in der Standardsortierung des gewaehlten Kataloges zurueck.</p><p>Da die Abfrage ueber die so genannte XML-Schnittstelle erfolgt ( die im Gegensatz z.B. zu SRU nicht standardisiert ist) muss sich die Funktion durch die Kurztitellisten hangeln, die jeweils nur 10 Datensaetze auf einmal uebermitteln. Mit einer sauber standardisierten und implementierten Schnittstelle koennte man mehr machen ... ;) vgl. den PERLIS-Webservice.</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$psibase</b>&nbsp;&nbsp;</td>
+        <td>Basis-URL, z.B. &quot;http://gso.gbv.de/DB=2.1/&quot;</td>
+      </tr>
+		      <tr>
+        <td class="type">int&nbsp;&nbsp;</td>
+        <td><b>$ikt</b>&nbsp;&nbsp;</td>
+        <td>Suchschluessel. Wo soll gesucht werden, z.B. in &quot;1004&quot; fuer Suche nach Personenname</td>
+      </tr>
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$search</b>&nbsp;&nbsp;</td>
+        <td>Suchanfrage, z.B. &quot;von Foerster, Heinz&quot;</td>
+      </tr>
+		      <tr>
+        <td class="type">int&nbsp;&nbsp;</td>
+        <td><b>$limit</b>&nbsp;&nbsp;</td>
+        <td>Maximale Trefferanzahl (maximal 1000, Standard ist 100)</td>
+      </tr>
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$sort</b>&nbsp;&nbsp;</td>
+        <td>Sortierung, z.B. &quot;LST_a&quot; fuer die Sortierung nach Autor im GVK</td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functionget_records_via_unapi"></a>
+	<h3>get_records_via_unapi <span class="smalllinenumber">[line 257]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void get_records_via_unapi(
+string $server, array $ids, [string $format = &amp;quot;&amp;quot;], [string $prefix = &amp;quot;&amp;quot;])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		Holt Metadaten ueber unAPI-Schnittstelle<br /><br /><p>Liefert Metadaten im geforderten Format, arbeitet ein Array mit Identifiern ab. Sofern kein Metadatenformat bei Aufruf genannt wird, wird Einstellung aus $publistconf[unapiformat] uebernommen. Liefert ein Array mit Paaren id =&gt; Datensatz zurueck. Das Prefix beim Datensatz-Identifier ist nach unAPI-Spezifikation grundsaetzlich optional, bei Verwendung der GBV-unAPI-Schnittstelle aber Pflicht, da hier ueber eine Schnittstelle mehrere Datenquellen erreichbar sind.</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$server</b>&nbsp;&nbsp;</td>
+        <td>Basis-URL des unAPI-Servers, z.B. &quot;http://unapi.gbv.de/&quot;</td>
+      </tr>
+		      <tr>
+        <td class="type">array&nbsp;&nbsp;</td>
+        <td><b>$ids</b>&nbsp;&nbsp;</td>
+        <td>Array mit IDs, z.B. &quot;56677741X&quot;</td>
+      </tr>
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$format</b>&nbsp;&nbsp;</td>
+        <td>Gewuenschtes Metadtenformat. Standard ist $publistconf['unapiformat']</td>
+      </tr>
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$prefix</b>&nbsp;&nbsp;</td>
+        <td>ID-Prefix zur Kennzeichnung der Datenquelle, z.B. &quot;gvk:ppn:&quot;</td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functionlog_msg"></a>
+	<h3>log_msg <span class="smalllinenumber">[line 77]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void log_msg(
+string $message, int $level)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		Schreibt Nachrichten in die Logdatei oder auf den Bildschirm<br /><br /><p>Schreibt Nachrichten in eine Logging Datei sofern diese definiert wurde und der Loglevel ueber dem in $publistconf['loglevel'] definierten Wert liegt. Falls $publistconf['debug'] werden zusaetzlich alle Nachrichten als HTML auf den Bildschirm ausgeben. Negative Loglevel geben Fehler an, positive Loglevel einfache Nachrichten. Je hoeher der Absolutwert des Loglevel, desto weniger wichtig ist die Nachricht. Hier einige Beispiele: <ul><li>log_msg(&quot;Ganz schwerer Fehler&quot;, -1);</li><li>log_msg(&quot;Nicht so schwerwiegender Fehler&quot;, -3);</li><li>log_msg(&quot;Ganz wichtiger Schritt&quot;, 1);</li><li>log_msg(&quot;Unwichtiger Hinweis&quot;, 3);</li></ul></p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$message</b>&nbsp;&nbsp;</td>
+        <td>Nachrichtentext</td>
+      </tr>
+		      <tr>
+        <td class="type">int&nbsp;&nbsp;</td>
+        <td><b>$level</b>&nbsp;&nbsp;</td>
+        <td>Loglevel</td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+
+        <div class="credit">
+		    <hr />
+		    Documentation generated on Tue, 09 Sep 2008 13:18:48 +0200 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.1</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

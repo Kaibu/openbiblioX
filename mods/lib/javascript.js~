@@ -1,0 +1,151 @@
+
+
+
+
+
+
+/*************setzt eingabefelder nach anzahl um eins hoch oder niedriger *******************************/
+
+function showslogan(anzahl){
+	//document.write(document.getElementById('slogan1').getAttribute('value');
+	//document.getElementById('slogan1').setAttribute("type", "hidden");
+	
+	if(anzahl == 1){
+		document.getElementById('slogan1').setAttribute("type", "hidden");
+		document.getElementById('slogan2').setAttribute("type", "hidden");
+		document.getElementById('slogan3').setAttribute("type", "hidden");
+		document.getElementById('slogan4').setAttribute("type", "hidden");
+	}
+	if (anzahl == 2) {
+		document.getElementById('slogan1').setAttribute("type", "text");
+		document.getElementById('slogan2').setAttribute("type", "hidden");
+		document.getElementById('slogan3').setAttribute("type", "hidden");
+		document.getElementById('slogan4').setAttribute("type", "hidden");
+	}
+	if (anzahl == 3){
+		document.getElementById('slogan1').setAttribute("type", "text");
+		document.getElementById('slogan2').setAttribute("type", "text");
+		document.getElementById('slogan3').setAttribute("type", "hidden");
+		document.getElementById('slogan4').setAttribute("type", "hidden");
+	}
+	if (anzahl == 4){
+		document.getElementById('slogan1').setAttribute("type", "text");
+		document.getElementById('slogan2').setAttribute("type", "text");
+		document.getElementById('slogan3').setAttribute("type", "text");
+		document.getElementById('slogan4').setAttribute("type", "hidden");
+	}
+	if (anzahl == 5){
+		document.getElementById('slogan1').setAttribute("type", "text");
+		document.getElementById('slogan2').setAttribute("type", "text");
+		document.getElementById('slogan3').setAttribute("type", "text");
+		document.getElementById('slogan4').setAttribute("type", "text");
+	}
+}
+
+
+/***************Slogans finden*****************/
+
+function find_slogans(list_slogans){
+	//var finds = slogan_matches.split(";");
+	//document.catalog.extra.value = list_slogans;
+	alert(list_slogans);
+	//document.catalog.slogan0.value;
+	
+	//document.getElementById('slogan0').setAtrribute("type","hidden");
+	
+	//var i = 0;
+	//var array_length = finds.length;
+	//while (i <= array_length){
+		//var myselect = document.createElement("select")
+		//var myoption = createAttribute("option");
+		//var myvalue = createAttribute("value");
+		//var mytext = createTextNode("Test");
+		//myselect.appendChild(myoption)
+		//myselect.appendChild(myvalue);
+		//myselect.appendChild(mytext);
+		//document.getElementById('select1').setAttribute("value","0");//finds[i];
+		//var Ausgabe = document.getElementById("select1");
+		//Ausgabe.appendChild(myselect);
+		//var matches[]=finds[i];
+		//var i=i+1;
+	//}
+	//return matches;
+}
+
+
+function hinzu(list){
+				//alert(slogan);	
+				var Eintrag ="";
+				var Auswahlliste="";
+				var slogan0 ="";
+				var matches ="";
+				var slogan0 = document.catalog.slogan0.value;
+				var slogan1 = document.catalog.slogan1.value;
+				var slogan2 = document.catalog.slogan2.value;
+				var slogan3 = document.catalog.slogan3.value;
+				var slogan4 = document.catalog.slogan4.value;
+				document.catalog.extra.value = "hier ist die kopie der slogans:  "+slogan0+";"+slogan1+";"+slogan2+";"+slogan3+";"+slogan4;	
+			//	var list ='<?php echo $list_slogans;?>';
+				var list = list.split(";");
+				
+				var matches = new Array();
+				var y=0;
+				for(var i=0; i < list.length;i++){
+					var find=list[i].indexOf(slogan0);
+					if (find >= 0){	
+						matches[y] = list[i];
+						y++;
+					}
+					
+				}
+			//alert(matches[4]);	
+				while (document.getElementById("slogans0").getElementsByTagName("option").length > 0){
+					var Knoten = document.getElementById("slogans0").getElementsByTagName("option")[0];
+					document.getElementById("slogans0").removeChild(Knoten);
+				}
+				
+				
+				var Wert = 1;	
+				for (var i=0; i < matches.length;i++){
+				  
+				  	var Auswahlliste = document.getElementsByName("slogans0")[0];
+				  	var Eintrag = document.createElement("option");
+				  	
+				  	Eintrag.text = matches[i];
+				  	Eintrag.value = Wert;
+				  	var FolgendeOption = null;
+				  	FolgendeOption = Auswahlliste.length;
+				  	//alert(document.write(Auswahlliste));
+					Auswahlliste.add(Eintrag, FolgendeOption);
+					Wert += 1;
+					// var alte_liste = matches.length;
+					
+					
+				}
+			 }
+
+				function set_value(){
+					
+					//var anzahl = document.getElementById("Testside").getElementsByTagName("option").length;
+					while (document.getElementById("Testside").getElementsByTagName("option").length > 0){
+					var Knoten = document.getElementById("Testside").getElementsByTagName("option")[0];
+					document.getElementById("Testside").removeChild(Knoten);
+					}
+				}		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+

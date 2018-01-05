@@ -1,0 +1,3 @@
+*.bak
+database_constants.php
+.idea/
